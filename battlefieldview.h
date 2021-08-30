@@ -1,12 +1,11 @@
 #ifndef BATTLEFIELDVIEW_H
 #define BATTLEFIELDVIEW_H
 
-#include "statusConstant.h"
 #include "graphland.h"
 #include "role.h"
+#include "statusConstant.h"
 #include <QGraphicsView>
 #include <QVector>
-
 
 class BattlefieldView : public QGraphicsView {
     Q_OBJECT
@@ -22,7 +21,7 @@ signals:
     void roleChosen(Role*);
     void landChosen(GraphLand*);
 
-public slots:  
+public slots:
     void showReachableLands(Role*);
     void closeReachableLands();
 
@@ -41,11 +40,14 @@ protected:
     void updateMapStatus();
 
     QVector<QVector<coordinateStatus>> m_mapStatus;
+    QVector<QVector<GraphUnit*>>       m_topUnit;
     QVector<QVector<actionStatus>>     m_actionStatus;
 
     Role* m_observingRole;
     void  handleMoving(Role* t_role, GraphLand* t_land);
     void  handleAttack(Role* t_sender, Role* t_target);
+
+    QList<GraphUnit*> getPath(GraphUnit* t_start, GraphUnit* t_end);
 };
 
 #endif  // BATTLEFIELDVIEW_H

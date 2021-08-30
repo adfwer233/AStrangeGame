@@ -11,8 +11,9 @@ Role::Role(int t_x, int t_y, int t_team) : GraphUnit(t_x, t_y){
     m_fullLifeValue = 50;
     m_damage        = 20 + rand() % 5;
     m_defense       = 5;
-
     m_teamID = t_team == 0 ? teamOne : teamTwo;
+
+    m_isShowingAttackable = 0;
 }
 
 QRectF Role::boundingRect() const {
@@ -85,7 +86,7 @@ void Role::updateActionStatus(QVector<QVector<actionStatus>> & t_actionStatus, c
         for (int j = 0; j < t_coordinate[i].size(); j++) {
             tmp += QString(std::to_string(t_coordinate[i][j]).c_str()) + " ";
         }
-        qDebug() << tmp;
+        // qDebug() << tmp;
     }
 }
 

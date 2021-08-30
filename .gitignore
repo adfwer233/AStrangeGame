@@ -1,3 +1,5 @@
 /build/
 /.vscode/
 /.qt_for_python/
+/GameDocument/
+Readme.md
