@@ -4,9 +4,12 @@
 #include "graphunit.h"
 #include "roleskill.h"
 #include "statusConstant.h"
+#include "rolebuff.h"
+
 #include <QGraphicsItem>
 #include <QString>
 #include <QVector>
+#include <QList>
 
 class Role : public GraphUnit {
     Q_OBJECT
@@ -32,9 +35,11 @@ public:
     void  setroundFinished(bool);
     Role* observingRole() const;
 
-    virtual void settleLifeLoss(int t_damage);
 
-    void updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, const QVector<QVector<coordinateStatus>>& t_coordinate);
+    // the virtual functions 
+    virtual void settleLifeLoss(int t_damage);
+    virtual void updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, const QVector<QVector<coordinateStatus>>& t_coordinate);
+    virtual void handleAttack(Role* t_target, QList<GraphUnit*> t_list); 
 
 private:
     // basic properties for roles
@@ -50,6 +55,10 @@ private:
     bool m_roundFinished;
 
     bool m_isShowingAttackable;
+
+    // buff system
+    QList<roleBuff*> m_buffs;
+    void settleBuff(roleBuff* buff);
 
 signals:
     void roleStatueChanged(Role*);

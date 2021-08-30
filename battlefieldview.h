@@ -16,6 +16,8 @@ public:
     virtual void drawBattlefield();
     virtual void resizeEvent(QResizeEvent* event) override;
 
+    QList<GraphUnit*> getPath(GraphUnit* t_start, GraphUnit* t_end);
+
 signals:
     void focusChanged(GraphicUnitInfo);
 
@@ -52,9 +54,7 @@ protected:
 
     Role* m_observingRole;
     void  handleMoving(Role* t_role, GraphLand* t_land);
-    void  handleAttack(Role* t_sender, Role* t_target);
 
-    QList<GraphUnit*> getPath(GraphUnit* t_start, GraphUnit* t_end);
 
     // information about the round system
     int              m_roundNumber;

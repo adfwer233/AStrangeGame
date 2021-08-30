@@ -1,17 +1,17 @@
 #include "role.h"
 #include <QCursor>
+#include <QDebug>
 #include <QPainter>
 #include <QParallelAnimationGroup>
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
-#include <QDebug>
-Role::Role(int t_x, int t_y, int t_team) : GraphUnit(t_x, t_y){
+Role::Role(int t_x, int t_y, int t_team) : GraphUnit(t_x, t_y) {
     m_Description   = tr("抽象人物单元");
     m_lifeValue     = 50;
     m_fullLifeValue = 50;
     m_damage        = 20 + rand() % 5;
     m_defense       = 5;
-    m_teamID = t_team == 0 ? teamOne : teamTwo;
+    m_teamID        = t_team == 0 ? teamOne : teamTwo;
 
     m_isShowingAttackable = 0;
 }
@@ -62,14 +62,21 @@ void Role::settleLifeLoss(int t_damage) {
     }
 }
 
-void Role::updateActionStatus(QVector<QVector<actionStatus>> & t_actionStatus, const QVector<QVector<coordinateStatus>> & t_coordinate) {
+
+/**
+ * Role 
+ * find the moveable and attackable targets (need to be a virtual function)
+ * @param  {QVector<QVector<actionStatus>>} t_actionStatus   : 
+ * @param  {QVector<QVector<coordinateStatus>>} t_coordinate : 
+ */
+void Role::updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, const QVector<QVector<coordinateStatus>>& t_coordinate) {
     for (int i = 0; i < t_coordinate.size(); i++) {
         for (int j = 0; j < t_coordinate[i].size(); j++) {
 
             t_actionStatus[i][j] = none;
             if (t_coordinate[i][j] == teamOne && this->teamID() == teamTwo && abs(i - this->coordinateX()) + abs(j - this->coordinateY()) < 5) {
                 t_actionStatus[i][j] = attackable;
-            } 
+            }
             else if (t_coordinate[i][j] == teamTwo && this->teamID() == teamOne && abs(i - this->coordinateX()) + abs(j - this->coordinateY()) < 5) {
                 t_actionStatus[i][j] = attackable;
             }
@@ -80,7 +87,6 @@ void Role::updateActionStatus(QVector<QVector<actionStatus>> & t_actionStatus, c
         }
     }
 
-
     for (int i = 0; i < t_coordinate.size(); i++) {
         QString tmp = "";
         for (int j = 0; j < t_coordinate[i].size(); j++) {
@@ -90,6 +96,37 @@ void Role::updateActionStatus(QVector<QVector<actionStatus>> & t_actionStatus, c
     }
 }
 
+void Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
+    if (this->teamID() == t_target->teamID()) {
+        return;
+    }
+
+    if (t_target->isShowingAttackable() == true && this != nullptr) {
+
+
+        QSequentialAnimationGroup* animationGroup = new QSequentialAnimationGroup();
+        for (int i = 1; i < t_list.size(); i++) {
+            QPropertyAnimation* moveAnimation = new QPropertyAnimation(this, "pos");
+            moveAnimation->setDuration(100);
+            moveAnimation->setStartValue(t_list[i - 1]->pos());
+            moveAnimation->setEndValue(t_list[i]->pos());
+            animationGroup->addAnimation(moveAnimation);
+        }
+
+        for (int i = t_list.size() - 1; i >= 1; i--) {
+            QPropertyAnimation* moveAnimation = new QPropertyAnimation(this, "pos");
+            moveAnimation->setDuration(100);
+            moveAnimation->setStartValue(t_list[i]->pos());
+            moveAnimation->setEndValue(t_list[i - 1]->pos());
+            animationGroup->addAnimation(moveAnimation);
+        }
+
+        animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
+
+        t_target->settleLifeLoss(this->damage());
+        return;
+    }
+}
 
 void Role::setShowingAttackable(bool t_value) {
     m_isShowingAttackable = t_value;

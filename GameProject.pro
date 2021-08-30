@@ -26,6 +26,7 @@ SOURCES += \
     normalland.cpp \
     obstacle.cpp \
     role.cpp \
+    rolebuff.cpp \
     roleskill.cpp \
     rolestatuspanel.cpp \
     roundstatuspanel.cpp
@@ -40,6 +41,7 @@ HEADERS += \
     normalland.h \
     obstacle.h \
     role.h \
+    rolebuff.h \
     roleskill.h \
     rolestatuspanel.h \
     statusConstant.h \

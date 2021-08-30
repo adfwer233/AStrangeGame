@@ -34,7 +34,7 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
 
         if (graphUnit->inherits("Role")) {
             Role* role = static_cast<Role*>(graphUnit);
-            handleAttack(m_observingRole, role);
+            m_observingRole->handleAttack(role, getPath(m_observingRole, role));
             m_observingRole->setroundFinished(true);
         }
 
@@ -285,46 +285,6 @@ void BattlefieldView::handleMoving(Role* t_role, GraphLand* t_land) {
     }
 
     this->scene()->update(scene()->itemsBoundingRect());
-}
-
-/**
- * 普通攻击的动画与结算
- *
- * @param  {Role*} t_sender : 攻击发出者
- * @param  {Role*} t_target : 被攻击者
- */
-void BattlefieldView::handleAttack(Role* t_sender, Role* t_target) {
-
-    if (t_sender->teamID() == t_target->teamID()) {
-        return;
-    }
-
-    if (t_target->isShowingAttackable() == true && t_sender != nullptr) {
-
-        auto items = getPath(t_sender, t_target);
-
-        QSequentialAnimationGroup* animationGroup = new QSequentialAnimationGroup();
-        for (int i = 1; i < items.size(); i++) {
-            QPropertyAnimation* moveAnimation = new QPropertyAnimation(t_sender, "pos");
-            moveAnimation->setDuration(100);
-            moveAnimation->setStartValue(items[i - 1]->pos());
-            moveAnimation->setEndValue(items[i]->pos());
-            animationGroup->addAnimation(moveAnimation);
-        }
-
-        for (int i = items.size() - 1; i >= 1; i--) {
-            QPropertyAnimation* moveAnimation = new QPropertyAnimation(t_sender, "pos");
-            moveAnimation->setDuration(100);
-            moveAnimation->setStartValue(items[i]->pos());
-            moveAnimation->setEndValue(items[i - 1]->pos());
-            animationGroup->addAnimation(moveAnimation);
-        }
-
-        animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
-
-        t_target->settleLifeLoss(t_sender->damage());
-        return;
-    }
 }
 
 /**
