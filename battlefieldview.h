@@ -4,6 +4,7 @@
 #include "graphland.h"
 #include "role.h"
 #include "statusConstant.h"
+#include "roundstatuspanel.h"
 #include <QGraphicsView>
 #include <QVector>
 
@@ -21,6 +22,10 @@ signals:
     void roleChosen(Role*);
     void landChosen(GraphLand*);
 
+    void gameover(coordinateStatus);
+
+    void roundStatudChanged(roundStatus);
+
 public slots:
     void showReachableLands(Role*);
     void closeReachableLands();
@@ -28,6 +33,8 @@ public slots:
     void showAttackableRoles(Role*);
     void closeAttackableRoles();
 
+    void nextRound();
+    
 protected:
     void mousePressEvent(QMouseEvent* event) override;
     void addLandItem(GraphLand* t_land, int t_x, int t_y);
@@ -48,6 +55,12 @@ protected:
     void  handleAttack(Role* t_sender, Role* t_target);
 
     QList<GraphUnit*> getPath(GraphUnit* t_start, GraphUnit* t_end);
+
+    // information about the round system
+    int              m_roundNumber;
+    coordinateStatus m_activeTeam;
+
+    void initalizeRound(coordinateStatus t_team);
 };
 
 #endif  // BATTLEFIELDVIEW_H

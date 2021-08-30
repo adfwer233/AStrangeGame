@@ -1,5 +1,6 @@
 #include "battlefieldWidget.h"
 #include <QLayout>
+#include <QMessageBox>
 
 BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
     m_battlefieldView     = new BattlefieldView();
@@ -14,6 +15,7 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
     m_beginRoundButton         = new QPushButton(tr("开始回合"));
     m_cancelSelection          = new QPushButton(tr("取消选择"));
     m_roleStatusPanel          = new RoleStatusPanel();
+    m_roundStatusPanel         = new roundStatusPanel();
 
     messageLayout->addWidget(m_roleStatusPanel);
     messageLayout->addWidget(m_coordinateLabel);
@@ -22,28 +24,45 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
     messageLayout->addWidget(m_beginRoundButton);
 
     QHBoxLayout* layout = new QHBoxLayout();
-    layout->addWidget(m_battlefieldView);
+
+    QVBoxLayout* leftLayout = new QVBoxLayout();
+    leftLayout->addWidget(m_battlefieldView);
+    leftLayout->addWidget(m_roundStatusPanel);
+
+    layout->addLayout(leftLayout);
     layout->addLayout(messageLayout);
 
     this->setLayout(layout);
 
     // Show the panel when a role is chosen
-    connect(m_battlefieldView, &BattlefieldView::roleChosen, this, [=]{this->m_roleStatusPanel->show();});
+    connect(m_battlefieldView, &BattlefieldView::roleChosen, this, [=] { this->m_roleStatusPanel->show(); });
     connect(m_battlefieldView, &BattlefieldView::roleChosen, m_roleStatusPanel, &RoleStatusPanel::updateByRole);
 
     // hide the panel when the land is chosen
-    connect(m_battlefieldView, &BattlefieldView::landChosen, this, [=]{this->m_roleStatusPanel->hide();});
+    connect(m_battlefieldView, &BattlefieldView::landChosen, this, [=] { this->m_roleStatusPanel->hide(); });
 
-    //update other message
+    // update other message
     connect(m_battlefieldView, &BattlefieldView::focusChanged, this, &BattlefieldWidget::updateMessage);
 
     // the button used to cancel the Selection
     connect(m_cancelSelection, &QPushButton::clicked, m_battlefieldView, &BattlefieldView::closeAttackableRoles);
     connect(m_cancelSelection, &QPushButton::clicked, m_battlefieldView, &BattlefieldView::closeReachableLands);
+
+    // connect the gameover signal from view to the slot
+    connect(m_battlefieldView, &BattlefieldView::gameover, this, &BattlefieldWidget::gameover);
+
+    // connect the end round button clicked to the BattlefieldView
+    connect(m_roundStatusPanel, &roundStatusPanel::endTheRound, m_battlefieldView, &BattlefieldView::nextRound);
+    connect(m_battlefieldView, &BattlefieldView::roundStatudChanged, m_roundStatusPanel, &roundStatusPanel::updateRoundStatus);
+
 }
 
 void BattlefieldWidget::updateMessage(GraphicUnitInfo t_info) {
     std::string temp = "X: " + std::to_string(t_info.coordinateX) + "  Y: " + std::to_string(t_info.coordinateY);
     m_coordinateLabel->setText(QObject::tr(temp.c_str()));
     m_descriptionLabel->setText(t_info.Description);
+}
+
+void BattlefieldWidget::gameover(coordinateStatus t_winner) {
+    QMessageBox::information(this, "!!!", "Good Game", QMessageBox::Ok);
 }

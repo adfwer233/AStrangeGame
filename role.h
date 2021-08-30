@@ -27,7 +27,9 @@ public:
     int   fullMagicValue() const;
     int   damage() const;
     int   defense() const;
+    bool  isroundFinished() const;
     void  setCoordinate(int x, int y);
+    void  setroundFinished(bool);
     Role* observingRole() const;
 
     virtual void settleLifeLoss(int t_damage);
@@ -43,6 +45,9 @@ private:
     int              m_damage;
     int              m_defense;
     coordinateStatus m_teamID;
+
+    // properties to achieve the Round System
+    bool m_roundFinished;
 
     bool m_isShowingAttackable;
 

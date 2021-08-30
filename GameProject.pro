@@ -27,7 +27,8 @@ SOURCES += \
     obstacle.cpp \
     role.cpp \
     roleskill.cpp \
-    rolestatuspanel.cpp
+    rolestatuspanel.cpp \
+    roundstatuspanel.cpp
 
 HEADERS += \
     battlefieldwidget.h \
@@ -41,7 +42,8 @@ HEADERS += \
     role.h \
     roleskill.h \
     rolestatuspanel.h \
-    statusConstant.h
+    statusConstant.h \
+    roundstatuspanel.h
 
 FORMS += \
     mainwindow.ui

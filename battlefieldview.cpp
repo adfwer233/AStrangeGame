@@ -13,7 +13,9 @@
 #include <QQueue>
 #include <QSequentialAnimationGroup>
 
-BattlefieldView::BattlefieldView(QWidget* parent) : QGraphicsView(parent) {}
+BattlefieldView::BattlefieldView(QWidget* parent) : QGraphicsView(parent) {
+    m_roundNumber = 0;
+}
 
 void BattlefieldView::mousePressEvent(QMouseEvent* event) {
     QPoint         viewPos  = event->pos();
@@ -37,6 +39,8 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
         m_observingRole->clearFocus();
         scene()->update(m_observingRole->boundingRect());
         scene()->update(graphUnit->boundingRect());
+        
+        m_observingRole->setroundFinished(true);
 
         m_observingRole = nullptr;
         closeAttackableRoles();
@@ -59,8 +63,10 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
             Role* t_role = static_cast<Role*>(graphUnit);
             emit  roleChosen(t_role);
 
-            showReachableLands(t_role);
-            showAttackableRoles(t_role);
+            if (t_role->isroundFinished() == false) {
+                showReachableLands(t_role);
+                showAttackableRoles(t_role);
+            }
         }
     }
 
@@ -120,6 +126,8 @@ void BattlefieldView::drawBattlefield() {
     m_topUnit.resize(m_mapwidth);
     for (auto& x : m_topUnit)
         x.resize(m_mapheight);
+
+    initalizeRound(teamOne);
 }
 
 void BattlefieldView::updateMapStatus() {
@@ -213,11 +221,15 @@ void BattlefieldView::closeAttackableRoles() {
 /**
  * BattlefieldView
  * clear the died roles and make them unfocusable
+ * when one team has no role living, emit the game overslot
  */
 void BattlefieldView::updateBattlefield() {
     auto items = this->scene()->items();
 
     // clean the died roles
+    int teamoneNum = 0;
+    int teamtwoNum = 0;
+
     for (auto t_item : items) {
         Role* unit = dynamic_cast<Role*>(t_item);
         if (unit != nullptr) {
@@ -225,9 +237,20 @@ void BattlefieldView::updateBattlefield() {
                 unit->setFlag(QGraphicsItem::ItemIsFocusable, false);
                 // QMessageBox::information(this, "help", "gg", QMessageBox::Ok);
             }
+            else {
+                if (unit->teamID() == teamOne)
+                    teamoneNum++;
+                else if (unit->teamID() == teamTwo)
+                    teamtwoNum++;
+            }
         }
     }
     this->scene()->update(scene()->itemsBoundingRect());
+
+    if (teamoneNum == 0)
+        emit gameover(teamTwo);
+    else if (teamtwoNum == 0)
+        emit gameover(teamOne);
 }
 
 /**
@@ -300,6 +323,9 @@ void BattlefieldView::handleAttack(Role* t_sender, Role* t_target) {
     }
 }
 
+/**
+ * a function used to find the path in the animation
+ */
 void getPathBFS(int x, int y, QVector<QVector<coordinateStatus>>& t_map, QVector<QVector<std::pair<int, int>>>& t_result,
                 QVector<QVector<bool>>& vis) {
 
@@ -331,6 +357,13 @@ void getPathBFS(int x, int y, QVector<QVector<coordinateStatus>>& t_map, QVector
     }
 }
 
+/**
+ * BattlefieldView
+ * find the path from start to t_end
+ * @param  {GraphUnit*} t_start :  origin
+ * @param  {GraphUnit*} t_end   :  destination
+ * @return {QList<GraphUnit>*}  : the path got by BFS
+ */
 QList<GraphUnit*> BattlefieldView::getPath(GraphUnit* t_start, GraphUnit* t_end) {
     updateMapStatus();
     QVector<QVector<std::pair<int, int>>> result;
@@ -368,3 +401,32 @@ QList<GraphUnit*> BattlefieldView::getPath(GraphUnit* t_start, GraphUnit* t_end)
 
     return answer;
 }
+
+void BattlefieldView::initalizeRound(coordinateStatus t_team) {
+    m_roundNumber += 1;
+    m_activeTeam = t_team;
+
+    auto items = scene()->items();
+    for (auto unit : items) {
+        auto role = dynamic_cast<Role*>(unit);
+        if (role != nullptr) {
+            if (role->teamID() == t_team) {
+                role->setroundFinished(false);
+            }
+            else {
+                role->setroundFinished(true);
+            }
+        }
+    }
+
+    emit roundStatudChanged(roundStatus{ m_roundNumber, m_activeTeam });
+}
+
+void BattlefieldView::nextRound() {
+    if (m_activeTeam == teamOne) {
+        initalizeRound(teamTwo);
+    } else if (m_activeTeam == teamTwo) {
+        initalizeRound(teamOne);
+    }
+}
+

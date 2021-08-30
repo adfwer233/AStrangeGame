@@ -131,3 +131,11 @@ void Role::setCoordinate(int x, int y) {
     m_coordinateX = x;
     m_coordinateY = y;
 }
+
+bool Role::isroundFinished() const {
+    return m_roundFinished;
+}
+
+void Role::setroundFinished(bool value) {
+    m_roundFinished = value;
+}
