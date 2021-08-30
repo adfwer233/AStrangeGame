@@ -61,6 +61,7 @@ protected:
     coordinateStatus m_activeTeam;
 
     void initalizeRound(coordinateStatus t_team);
+    bool checkOperability();
 };
 
 #endif  // BATTLEFIELDVIEW_H

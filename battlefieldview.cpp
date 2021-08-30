@@ -26,25 +26,29 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
 
     // there is a role observing
     if (graphUnit != nullptr && m_observingRole != nullptr) {
-        if (graphUnit->inherits("GraphLand")) {
+        if (graphUnit->inherits("normalLand")) {
             GraphLand* graphland = static_cast<GraphLand*>(graphUnit);
             handleMoving(m_observingRole, graphland);
+            m_observingRole->setroundFinished(true);
         }
 
         if (graphUnit->inherits("Role")) {
             Role* role = static_cast<Role*>(graphUnit);
             handleAttack(m_observingRole, role);
+            m_observingRole->setroundFinished(true);
         }
 
         m_observingRole->clearFocus();
         scene()->update(m_observingRole->boundingRect());
         scene()->update(graphUnit->boundingRect());
-        
-        m_observingRole->setroundFinished(true);
 
         m_observingRole = nullptr;
         closeAttackableRoles();
         closeReachableLands();
+
+        if (checkOperability() == false) {
+            nextRound();
+        }
 
         return;
     }
@@ -263,7 +267,6 @@ void BattlefieldView::handleMoving(Role* t_role, GraphLand* t_land) {
     if (t_land->isShowingReachability() == true && t_role != nullptr) {
 
         auto items = getPath(t_role, t_land);
-        t_role->setPos(this->pos());
 
         QSequentialAnimationGroup* animationGroup = new QSequentialAnimationGroup();
         for (int i = 1; i < items.size(); i++) {
@@ -276,6 +279,7 @@ void BattlefieldView::handleMoving(Role* t_role, GraphLand* t_land) {
 
         animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
+        t_role->setPos(this->pos());
         t_role->setCoordinate(t_land->coordinateX(), t_land->coordinateY());
         t_role = nullptr;
     }
@@ -425,8 +429,24 @@ void BattlefieldView::initalizeRound(coordinateStatus t_team) {
 void BattlefieldView::nextRound() {
     if (m_activeTeam == teamOne) {
         initalizeRound(teamTwo);
-    } else if (m_activeTeam == teamTwo) {
+    }
+    else if (m_activeTeam == teamTwo) {
         initalizeRound(teamOne);
     }
 }
 
+bool BattlefieldView::checkOperability() {
+    int  operableNumber = 0;
+    auto items          = scene()->items();
+    for (auto unit : items) {
+        auto role = dynamic_cast<Role*>(unit);
+        if (role != nullptr) {
+            if (role->lifeValue() >= 0 && role->isroundFinished() == false)
+                operableNumber++;
+        }
+    }
+    if (operableNumber > 0)
+        return true;
+    else
+        return false;
+}

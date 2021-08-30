@@ -24,7 +24,9 @@ private:
     QProgressBar* m_magicValueBar;
     QLabel* m_damageLabel;
     QLabel* m_defenseLabel;
-
+    QLabel* m_roundLabel;
+    QLabel* m_teamLabel;
+    QLabel* m_descriptionLabel;
     void initalizer();
 };
 

@@ -7,7 +7,6 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
     QGraphicsScene* scene = new QGraphicsScene();
 
     m_battlefieldView->setScene(scene);
-    m_battlefieldView->drawBattlefield();
 
     QVBoxLayout* messageLayout = new QVBoxLayout();
     m_coordinateLabel          = new QLabel(QObject::tr("这里将会显示坐标"));
@@ -55,6 +54,7 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
     connect(m_roundStatusPanel, &roundStatusPanel::endTheRound, m_battlefieldView, &BattlefieldView::nextRound);
     connect(m_battlefieldView, &BattlefieldView::roundStatudChanged, m_roundStatusPanel, &roundStatusPanel::updateRoundStatus);
 
+    m_battlefieldView->drawBattlefield();
 }
 
 void BattlefieldWidget::updateMessage(GraphicUnitInfo t_info) {
