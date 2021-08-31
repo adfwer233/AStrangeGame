@@ -1,13 +1,12 @@
 #include "infantary.h"
-
+#include "algorithm.h"
 Infantary::Infantary(int t_x, int t_y, int t_team) : Role(t_x, t_y, t_team) {
-    if (t_team == teamOne) {
+    if (t_team == 0) {
         m_movie = new QMovie(":/new/roles/src/infantary.gif");
     }
-    else {
-        m_movie = new QMovie(":/new/roles/src/infantary.gif");
+    else if (t_team == 1){
+        m_movie = new QMovie(":/new/roles/src/infantary2.gif");
     }
-
     m_movie->start();
 }
 
@@ -36,4 +35,8 @@ void Infantary::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
     if (m_movie != nullptr && m_movie->state() == QMovie::Running) {
         painter->drawImage(boundingRect(), m_movie->currentImage());
     }
+}
+
+void Infantary::updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, const QVector<QVector<coordinateStatus>>& t_coordinate) {
+    Algorithm::findPathBFS(t_coordinate, t_actionStatus, 5, 3, std::make_pair(coordinateX(), coordinateY()));
 }

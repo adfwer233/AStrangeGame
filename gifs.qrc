@@ -2,4 +2,7 @@
     <qresource prefix="/new/roles">
         <file>src/infantary.gif</file>
     </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/infantary2.gif</file>
+    </qresource>
 </RCC>

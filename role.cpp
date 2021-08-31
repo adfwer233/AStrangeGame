@@ -65,7 +65,7 @@ void Role::settleLifeLoss(int t_damage) {
 
 /**
  * Role
- * find the moveable and attackable targets (need to be a virtual function)
+ * find the moveable and attackable targets (a virtual function)
  * @param  {QVector<QVector<actionStatus>>} t_actionStatus   :
  * @param  {QVector<QVector<coordinateStatus>>} t_coordinate :
  */
