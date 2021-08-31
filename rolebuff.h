@@ -1,7 +1,6 @@
 #ifndef ROLEBUFF_H
 #define ROLEBUFF_H
 
-#include "role.h"
 #include <QObject>
 #include <QString>
 
@@ -9,10 +8,10 @@ class roleBuff {
 public:
     roleBuff();
 
-    virtual void lifeValueBuff(int& value) const {};
-    virtual void magicValueBuff(int& value) const {};
-    virtual void damageBuff(int& value) const {};
-    virtual void defenseBuff(int& value) const {};
+    virtual void lifeValueBuff(int&) const {};
+    virtual void magicValueBuff(int&) const {};
+    virtual void damageBuff(int&) const {};
+    virtual void defenseBuff(int&) const {};
 
     QString description();
 

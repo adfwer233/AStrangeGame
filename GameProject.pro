@@ -16,11 +16,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    algorithm.cpp \
     battlefieldwidget.cpp \
     battlefieldscene.cpp \
     battlefieldview.cpp \
     graphland.cpp \
     graphunit.cpp \
+    infantary.cpp \
     main.cpp \
     mainwindow.cpp \
     normalland.cpp \
@@ -32,11 +34,13 @@ SOURCES += \
     roundstatuspanel.cpp
 
 HEADERS += \
+    algorithm.h \
     battlefieldwidget.h \
     battlefieldscene.h \
     battlefieldview.h \
     graphland.h \
     graphunit.h \
+    infantary.h \
     mainwindow.h \
     normalland.h \
     obstacle.h \
@@ -54,3 +58,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+	gifs.qrc

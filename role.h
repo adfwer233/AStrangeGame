@@ -41,7 +41,7 @@ public:
     virtual void updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, const QVector<QVector<coordinateStatus>>& t_coordinate);
     virtual void handleAttack(Role* t_target, QList<GraphUnit*> t_list); 
 
-private:
+protected:
     // basic properties for roles
     int              m_lifeValue;
     int              m_fullLifeValue;
@@ -62,6 +62,9 @@ private:
 
 signals:
     void roleStatueChanged(Role*);
+
+public slots:
+    void repaint();
 };
 
 #endif  // ROLE_H

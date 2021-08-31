@@ -1,6 +1,7 @@
 #include "role.h"
 #include <QCursor>
 #include <QDebug>
+#include <QGraphicsScene>
 #include <QPainter>
 #include <QParallelAnimationGroup>
 #include <QPropertyAnimation>
@@ -62,12 +63,11 @@ void Role::settleLifeLoss(int t_damage) {
     }
 }
 
-
 /**
- * Role 
+ * Role
  * find the moveable and attackable targets (need to be a virtual function)
- * @param  {QVector<QVector<actionStatus>>} t_actionStatus   : 
- * @param  {QVector<QVector<coordinateStatus>>} t_coordinate : 
+ * @param  {QVector<QVector<actionStatus>>} t_actionStatus   :
+ * @param  {QVector<QVector<coordinateStatus>>} t_coordinate :
  */
 void Role::updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, const QVector<QVector<coordinateStatus>>& t_coordinate) {
     for (int i = 0; i < t_coordinate.size(); i++) {
@@ -102,7 +102,6 @@ void Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
     }
 
     if (t_target->isShowingAttackable() == true && this != nullptr) {
-
 
         QSequentialAnimationGroup* animationGroup = new QSequentialAnimationGroup();
         for (int i = 1; i < t_list.size(); i++) {
@@ -175,4 +174,8 @@ bool Role::isroundFinished() const {
 
 void Role::setroundFinished(bool value) {
     m_roundFinished = value;
+}
+
+void Role::repaint() {
+    scene()->update(boundingRect());
 }

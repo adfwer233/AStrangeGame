@@ -15,6 +15,7 @@
 
 BattlefieldView::BattlefieldView(QWidget* parent) : QGraphicsView(parent) {
     m_roundNumber = 0;
+    m_roleFlashTimer = new QTimer(this);
 }
 
 void BattlefieldView::mousePressEvent(QMouseEvent* event) {
@@ -110,7 +111,7 @@ void BattlefieldView::drawBattlefield() {
             addLandItem(newItem, i, j);
 
             if (i == 0) {
-                Role* roleItem = new Role(i, j, j % 2);
+                Role* roleItem = new Infantary(i, j, j % 2);
                 addRoleItem(roleItem, i, j);
             }
         }
@@ -131,6 +132,8 @@ void BattlefieldView::drawBattlefield() {
     for (auto& x : m_topUnit)
         x.resize(m_mapheight);
 
+    connect(m_roleFlashTimer, &QTimer::timeout, this,[&]{this->scene()->update(scene()->itemsBoundingRect());});
+    m_roleFlashTimer->start(100);
     initalizeRound(teamOne);
 }
 

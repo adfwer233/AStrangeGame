@@ -5,9 +5,10 @@
 #include "role.h"
 #include "statusConstant.h"
 #include "roundstatuspanel.h"
+#include "infantary.h"
 #include <QGraphicsView>
 #include <QVector>
-
+#include <QTimer>
 class BattlefieldView : public QGraphicsView {
     Q_OBJECT
 public:
@@ -62,6 +63,8 @@ protected:
 
     void initalizeRound(coordinateStatus t_team);
     bool checkOperability();
+
+    QTimer* m_roleFlashTimer;
 };
 
 #endif  // BATTLEFIELDVIEW_H
