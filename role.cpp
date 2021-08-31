@@ -122,6 +122,7 @@ void Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
 
         animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
+        this->setroundFinished(true);
         t_target->settleLifeLoss(this->damage());
         return;
     }

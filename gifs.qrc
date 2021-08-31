@@ -20,4 +20,16 @@
     <qresource prefix="/new/roles">
         <file>src/archer1_up.gif</file>
     </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/archer2_down.gif</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/archer2_left.gif</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/archer2_right.gif</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/archer2_up.gif</file>
+    </qresource>
 </RCC>

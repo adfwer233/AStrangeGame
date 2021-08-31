@@ -30,13 +30,11 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
         if (graphUnit->inherits("normalLand")) {
             GraphLand* graphland = static_cast<GraphLand*>(graphUnit);
             handleMoving(m_observingRole, graphland);
-            m_observingRole->setroundFinished(true);
         }
 
         if (graphUnit->inherits("Role")) {
             Role* role = static_cast<Role*>(graphUnit);
             m_observingRole->handleAttack(role, getPath(m_observingRole, role));
-            m_observingRole->setroundFinished(true);
         }
 
         m_observingRole->clearFocus();
@@ -99,8 +97,8 @@ void BattlefieldView::addRoleItem(Role* t_role, int t_x, int t_y) {
 
 void BattlefieldView::drawBattlefield() {
 
-    for (int i = 0; i < 15; i++) {
-        for (int j = 0; j < 15; j++) {
+    for (int i = 0; i < 25; i++) {
+        for (int j = 0; j < 5; j++) {
             GraphLand* newItem;
             if ((i * j) % 5 == 1)
                 newItem = new Obstacle(i, j);
@@ -118,8 +116,8 @@ void BattlefieldView::drawBattlefield() {
     }
 
     // ininialize the related status
-    m_mapheight = 15;
-    m_mapwidth  = 15;
+    m_mapheight = 5;
+    m_mapwidth  = 25;
     m_mapStatus.resize(m_mapwidth);
     for (auto& x : m_mapStatus)
         x.resize(m_mapheight);
@@ -282,6 +280,7 @@ void BattlefieldView::handleMoving(Role* t_role, GraphLand* t_land) {
 
         animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
+        t_role->setroundFinished(true);
         t_role->setPos(this->pos());
         t_role->setCoordinate(t_land->coordinateX(), t_land->coordinateY());
         t_role = nullptr;
