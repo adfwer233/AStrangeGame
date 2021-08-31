@@ -17,9 +17,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     algorithm.cpp \
+    archer.cpp \
     battlefieldwidget.cpp \
     battlefieldscene.cpp \
     battlefieldview.cpp \
+    flightequipment.cpp \
     graphland.cpp \
     graphunit.cpp \
     infantary.cpp \
@@ -31,13 +33,15 @@ SOURCES += \
     rolebuff.cpp \
     roleskill.cpp \
     rolestatuspanel.cpp \
-    roundstatuspanel.cpp
+    roundstatuspanel.cpp 
 
 HEADERS += \
     algorithm.h \
+    archer.h \
     battlefieldwidget.h \
     battlefieldscene.h \
     battlefieldview.h \
+    flightequipment.h \
     graphland.h \
     graphunit.h \
     infantary.h \

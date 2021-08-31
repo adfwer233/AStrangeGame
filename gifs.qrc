@@ -4,5 +4,20 @@
     </qresource>
     <qresource prefix="/new/roles">
         <file>src/infantary2.gif</file>
+    </qresource>    
+    <qresource prefix="/new/roles">
+        <file>src/arrow.png</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/archer1_down.gif</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/archer1_left.gif</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/archer1_right.gif</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/archer1_up.gif</file>
     </qresource>
 </RCC>

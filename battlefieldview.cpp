@@ -111,7 +111,7 @@ void BattlefieldView::drawBattlefield() {
             addLandItem(newItem, i, j);
 
             if (i == 0) {
-                Role* roleItem = new Infantary(i, j, j % 2);
+                Role* roleItem = new Archer(i, j, j % 2);
                 addRoleItem(roleItem, i, j);
             }
         }

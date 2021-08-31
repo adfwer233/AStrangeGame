@@ -6,6 +6,7 @@
 #include "statusConstant.h"
 #include "roundstatuspanel.h"
 #include "infantary.h"
+#include "archer.h"
 #include <QGraphicsView>
 #include <QVector>
 #include <QTimer>
