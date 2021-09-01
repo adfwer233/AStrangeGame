@@ -16,6 +16,9 @@
 BattlefieldView::BattlefieldView(QWidget* parent) : QGraphicsView(parent) {
     m_roundNumber = 0;
     m_roleFlashTimer = new QTimer(this);
+
+    //setViewportUpdateMode(QGraphicsView::ViewportUpdateMode::SmartViewportUpdate);
+    //setViewportUpdateMode()
 }
 
 void BattlefieldView::mousePressEvent(QMouseEvent* event) {
@@ -64,15 +67,16 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
 
         if (graphUnit->inherits("Role")) {
             Role* t_role = static_cast<Role*>(graphUnit);
-            emit  roleChosen(t_role);
-
-            if (t_role->isroundFinished() == false) {
-                showReachableLands(t_role);
-                showAttackableRoles(t_role);
+            if (t_role->lifeValue() > 0) {
+                emit  roleChosen(t_role);
+                if (t_role->isroundFinished() == false) {
+                    showReachableLands(t_role);
+                    showAttackableRoles(t_role);
+                }
             }
+
         }
     }
-
     // QGraphicsView::mousePressEvent(event);
 }
 
@@ -97,8 +101,8 @@ void BattlefieldView::addRoleItem(Role* t_role, int t_x, int t_y) {
 
 void BattlefieldView::drawBattlefield() {
 
-    for (int i = 0; i < 25; i++) {
-        for (int j = 0; j < 5; j++) {
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 10; j++) {
             GraphLand* newItem;
             if ((i * j) % 5 == 1)
                 newItem = new Obstacle(i, j);
@@ -116,8 +120,8 @@ void BattlefieldView::drawBattlefield() {
     }
 
     // ininialize the related status
-    m_mapheight = 5;
-    m_mapwidth  = 25;
+    m_mapwidth  = 20;
+    m_mapheight = 10;
     m_mapStatus.resize(m_mapwidth);
     for (auto& x : m_mapStatus)
         x.resize(m_mapheight);

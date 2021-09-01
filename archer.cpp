@@ -3,6 +3,7 @@
 #include "flightequipment.h"
 
 #include <QGraphicsItem>
+#include <QDebug>
 
 Archer::Archer(int t_x, int t_y, int t_team) : Role(t_x, t_y, t_team) {
     m_Description = tr("弓箭手");
@@ -55,8 +56,9 @@ void Archer::updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, 
     for (int i = 0; i < t_coordinate.size(); i++)
         for (int j = 0; j < t_coordinate[i].size(); j++)
             if ((t_coordinate[i][j] == teamOne || t_coordinate[i][j] == teamTwo) && (t_coordinate[i][j] != this->teamID()))
-                if ((i - x)^2 + (j - y)^2 <= 49)
+                if ((i - x)*(i - x) + (j - y)*(j - y) <= 49) {
                     t_actionStatus[i][j] = attackable;
+                }
 }
 
 void Archer::handleAttack(Role* t_target, QList<GraphUnit*>) {
