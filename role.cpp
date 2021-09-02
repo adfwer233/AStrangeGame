@@ -86,14 +86,6 @@ void Role::updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, co
             }
         }
     }
-
-    for (int i = 0; i < t_coordinate.size(); i++) {
-        QString tmp = "";
-        for (int j = 0; j < t_coordinate[i].size(); j++) {
-            tmp += QString(std::to_string(t_coordinate[i][j]).c_str()) + " ";
-        }
-        // qDebug() << tmp;
-    }
 }
 
 void Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
@@ -130,7 +122,6 @@ void Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
 
 void Role::settleBuff() {
     for (auto item : m_buffs) {
-        qDebug() << item;
         item->lifeValueBuff(m_lifeValue);
         m_lifeValue = std::max(m_lifeValue, m_fullLifeValue);
         item->magicValueBuff(m_magicValue);

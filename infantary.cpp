@@ -1,6 +1,11 @@
 #include "infantary.h"
 #include "algorithm.h"
 Infantary::Infantary(int t_x, int t_y, int t_team) : Role(t_x, t_y, t_team) {
+
+    m_lifeValue = m_fullLifeValue = 100;
+    m_damage = rand() % 3;
+    m_defense = 5;
+
     if (t_team == 0) {
         m_movie = new QMovie(":/new/roles/src/infantary.gif");
     }

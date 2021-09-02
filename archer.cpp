@@ -8,6 +8,7 @@
 Archer::Archer(int t_x, int t_y, int t_team) : Role(t_x, t_y, t_team) {
     m_Description = tr("弓箭手");
     m_lifeValue   = 75;
+    m_fullLifeValue = 75;
     m_damage      = 35 + rand() % 5;
 
     if (t_team == 0) {

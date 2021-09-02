@@ -1,6 +1,7 @@
 #include "rolestatuspanel.h"
 
 #include <QLayout>
+#include <QDebug>
 
 void RoleStatusPanel::initalizer() {
     m_lifeValueBar  = new QProgressBar();
@@ -58,10 +59,13 @@ void RoleStatusPanel::updateByRole(Role* const t_role) {
 
     m_lifeValueBar->setMaximum(t_role->fullLifeValue());
     m_lifeValueBar->setValue(std::max(0, t_role->lifeValue()));
-    m_magicValueBar->setValue(t_role->fullMagicValue());
-    m_magicValueBar->setValue(t_role->magicValue());
+    m_magicValueBar->setMaximum(t_role->fullMagicValue());
+    m_magicValueBar->setValue(std::max(0 ,t_role->magicValue()));
     m_damageLabel->setText(tr(std::to_string(t_role->damage()).c_str()));
     m_defenseLabel->setText(tr(std::to_string(t_role->defense()).c_str()));
+
+    qDebug() << t_role->fullLifeValue();
+    qDebug() << t_role->lifeValue();
 
     if (t_role->teamID() == teamOne) {
         m_teamLabel->setText(tr("队伍一"));

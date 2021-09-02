@@ -1,6 +1,6 @@
 #include "fallingobject.h"
 
-FallingObject::FallingObject(int t_x, int t_y) : GraphUnit(t_x, t_y) {
+FallingObject::FallingObject(int t_x, int t_y) : GraphLand(t_x, t_y) {
     m_buff = nullptr;
 }
 

@@ -1,11 +1,11 @@
 #ifndef FALLINGOBJECT_H
 #define FALLINGOBJECT_H
 
-#include "graphunit.h"
+#include "graphland.h"
 #include "rolebuff.h"
 #include <QImage>
 #include <QDebug>
-class FallingObject : public GraphUnit {
+class FallingObject : public GraphLand {
     Q_OBJECT
 public:
     FallingObject(int t_x, int t_y);

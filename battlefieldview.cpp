@@ -42,8 +42,8 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
 
         if (graphUnit->inherits("FallingObject")) {
             FallingObject* fallingBuff = static_cast<FallingObject*>(graphUnit);
-            qDebug() << fallingBuff->getBuff();
             m_observingRole->addBuff(fallingBuff->getBuff());
+            handleMoving(m_observingRole, fallingBuff);
         }
 
         m_observingRole->clearFocus();
@@ -75,6 +75,7 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
             Role* t_role = static_cast<Role*>(graphUnit);
             if (t_role->lifeValue() > 0) {
                 emit roleChosen(t_role);
+                qDebug() << "Before :" << t_role->lifeValue();
                 if (t_role->isroundFinished() == false) {
                     showReachableLands(t_role);
                     showAttackableRoles(t_role);
@@ -153,14 +154,6 @@ void BattlefieldView::drawBattlefield() {
     connect(m_roleFlashTimer, &QTimer::timeout, this, [&] { this->scene()->update(scene()->itemsBoundingRect()); });
     m_roleFlashTimer->start(100);
     initalizeRound(teamOne);
-
-    
-    for (auto item : scene()->items()) {
-        auto buff = dynamic_cast<FallingObject*>(item);
-        if (buff != nullptr) {
-            qDebug() << buff->getBuff();
-        }
-    }
 }
 
 void BattlefieldView::updateMapStatus() {
@@ -308,6 +301,9 @@ void BattlefieldView::handleMoving(Role* t_role, GraphLand* t_land) {
 
         animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
+        if (t_land->inherits("FallingObject"))
+            scene()->removeItem(t_land);
+        
         t_role->setroundFinished(true);
         t_role->setPos(this->pos());
         t_role->setCoordinate(t_land->coordinateX(), t_land->coordinateY());
