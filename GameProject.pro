@@ -21,6 +21,7 @@ SOURCES += \
     battlefieldwidget.cpp \
     battlefieldscene.cpp \
     battlefieldview.cpp \
+    fallingobject.cpp \
     flightequipment.cpp \
     graphland.cpp \
     graphunit.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     battlefieldwidget.h \
     battlefieldscene.h \
     battlefieldview.h \
+    fallingobject.h \
     flightequipment.h \
     graphland.h \
     graphunit.h \

@@ -5,6 +5,7 @@
 #include "role.h"
 #include "statusConstant.h"
 #include "roundstatuspanel.h"
+#include "fallingobject.h"
 #include "infantary.h"
 #include "archer.h"
 #include <QGraphicsView>
@@ -43,6 +44,7 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
     void addLandItem(GraphLand* t_land, int t_x, int t_y);
     void addRoleItem(Role* t_role, int t_x, int t_y);
+    void addBuffItem(FallingObject* t_buff, int t_x, int t_y);
     void updateBattlefield();
 
     // information about the map

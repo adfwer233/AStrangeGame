@@ -128,6 +128,18 @@ void Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
     }
 }
 
+void Role::settleBuff() {
+    for (auto item : m_buffs) {
+        qDebug() << item;
+        item->lifeValueBuff(m_lifeValue);
+        m_lifeValue = std::max(m_lifeValue, m_fullLifeValue);
+        item->magicValueBuff(m_magicValue);
+        m_magicValue = std::max(m_magicValue, m_fullmagicValue);
+        item->damageBuff(m_damage);
+        item->defenseBuff(m_defense);
+    }
+}
+
 void Role::setShowingAttackable(bool t_value) {
     m_isShowingAttackable = t_value;
 }
@@ -179,4 +191,8 @@ void Role::setroundFinished(bool value) {
 
 void Role::repaint() {
     scene()->update(boundingRect());
+}
+
+void Role::addBuff(RoleBuff* t_buff) {
+    m_buffs.push_back(t_buff);
 }

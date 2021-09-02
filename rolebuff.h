@@ -4,9 +4,9 @@
 #include <QObject>
 #include <QString>
 
-class roleBuff {
+class RoleBuff {
 public:
-    roleBuff();
+    RoleBuff();
 
     virtual void lifeValueBuff(int&) const {};
     virtual void magicValueBuff(int&) const {};
@@ -19,19 +19,23 @@ private:
     QString m_description;
 };
 
-class redBuff : public roleBuff {
+class redBuff : public RoleBuff {
+public:
     virtual void lifeValueBuff(int& value) const override;
 };
 
-class blueBuff : public roleBuff {
+class blueBuff : public RoleBuff {
+public:
     virtual void magicValueBuff(int& value) const override;
 };
 
-class fireBuff : public roleBuff {
+class fireBuff : public RoleBuff {
+public:   
     virtual void damageBuff(int& value) const override;
 };
 
-class waterBuff : public roleBuff {
+class waterBuff : public RoleBuff {
+public:
     virtual void defenseBuff(int& value) const override;
 };
 

@@ -14,11 +14,11 @@
 #include <QSequentialAnimationGroup>
 
 BattlefieldView::BattlefieldView(QWidget* parent) : QGraphicsView(parent) {
-    m_roundNumber = 0;
+    m_roundNumber    = 0;
     m_roleFlashTimer = new QTimer(this);
 
-    //setViewportUpdateMode(QGraphicsView::ViewportUpdateMode::SmartViewportUpdate);
-    //setViewportUpdateMode()
+    // setViewportUpdateMode(QGraphicsView::ViewportUpdateMode::SmartViewportUpdate);
+    // setViewportUpdateMode()
 }
 
 void BattlefieldView::mousePressEvent(QMouseEvent* event) {
@@ -38,6 +38,12 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
         if (graphUnit->inherits("Role")) {
             Role* role = static_cast<Role*>(graphUnit);
             m_observingRole->handleAttack(role, getPath(m_observingRole, role));
+        }
+
+        if (graphUnit->inherits("FallingObject")) {
+            FallingObject* fallingBuff = static_cast<FallingObject*>(graphUnit);
+            qDebug() << fallingBuff->getBuff();
+            m_observingRole->addBuff(fallingBuff->getBuff());
         }
 
         m_observingRole->clearFocus();
@@ -68,13 +74,12 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
         if (graphUnit->inherits("Role")) {
             Role* t_role = static_cast<Role*>(graphUnit);
             if (t_role->lifeValue() > 0) {
-                emit  roleChosen(t_role);
+                emit roleChosen(t_role);
                 if (t_role->isroundFinished() == false) {
                     showReachableLands(t_role);
                     showAttackableRoles(t_role);
                 }
             }
-
         }
     }
     // QGraphicsView::mousePressEvent(event);
@@ -88,6 +93,12 @@ void BattlefieldView::resizeEvent(QResizeEvent* event) {
 void BattlefieldView::addLandItem(GraphLand* t_land, int t_x, int t_y) {
     t_land->setPos(t_x * GraphUnit::INIT_SIZE, t_y * GraphUnit::INIT_SIZE);
     scene()->addItem(t_land);
+}
+
+void BattlefieldView::addBuffItem(FallingObject* t_buff, int t_x, int t_y) {
+    t_buff->setPos(t_x * GraphUnit::INIT_SIZE, t_y * GraphUnit::INIT_SIZE);
+    t_buff->setZValue(0.5);
+    scene()->addItem(t_buff);
 }
 
 void BattlefieldView::addRoleItem(Role* t_role, int t_x, int t_y) {
@@ -116,6 +127,11 @@ void BattlefieldView::drawBattlefield() {
                 Role* roleItem = new Archer(i, j, j % 2);
                 addRoleItem(roleItem, i, j);
             }
+
+            if ((i * j) % 5 == 2) {
+                FallingObject* buff = new FallingRedBuff(i, j);
+                addBuffItem(buff, i, j);
+            }
         }
     }
 
@@ -134,9 +150,17 @@ void BattlefieldView::drawBattlefield() {
     for (auto& x : m_topUnit)
         x.resize(m_mapheight);
 
-    connect(m_roleFlashTimer, &QTimer::timeout, this,[&]{this->scene()->update(scene()->itemsBoundingRect());});
+    connect(m_roleFlashTimer, &QTimer::timeout, this, [&] { this->scene()->update(scene()->itemsBoundingRect()); });
     m_roleFlashTimer->start(100);
     initalizeRound(teamOne);
+
+    
+    for (auto item : scene()->items()) {
+        auto buff = dynamic_cast<FallingObject*>(item);
+        if (buff != nullptr) {
+            qDebug() << buff->getBuff();
+        }
+    }
 }
 
 void BattlefieldView::updateMapStatus() {
@@ -159,7 +183,7 @@ void BattlefieldView::updateMapStatus() {
         auto unit = dynamic_cast<GraphUnit*>(item);
         if (unit != nullptr) {
             if (unit->inherits("Role")) {
-                auto role                                             = static_cast<Role*>(unit);
+                auto role = static_cast<Role*>(unit);
                 m_mapStatus[role->coordinateX()][role->coordinateY()] = role->teamID() == teamOne ? teamOne : teamTwo;
             }
 
@@ -398,6 +422,16 @@ void BattlefieldView::nextRound() {
     }
     else if (m_activeTeam == teamTwo) {
         initalizeRound(teamOne);
+    }
+
+    auto items = scene()->items();
+    for (auto unit : items) {
+        auto role = dynamic_cast<Role*>(unit);
+        if (role != nullptr) {
+            if (role->lifeValue() >= 0) {
+                role->settleBuff();
+            }
+        }
     }
 }
 

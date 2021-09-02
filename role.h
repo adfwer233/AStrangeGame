@@ -35,6 +35,9 @@ public:
     void  setroundFinished(bool);
     Role* observingRole() const;
 
+    // function of buff system
+    void addBuff(RoleBuff* t_buff);
+    void settleBuff();
 
     // the virtual functions 
     virtual void settleLifeLoss(int t_damage);
@@ -57,8 +60,7 @@ protected:
     bool m_isShowingAttackable;
 
     // buff system
-    QList<roleBuff*> m_buffs;
-    void settleBuff(roleBuff* buff);
+    QList<RoleBuff*> m_buffs;
 
 signals:
     void roleStatueChanged(Role*);

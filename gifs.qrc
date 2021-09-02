@@ -32,4 +32,16 @@
     <qresource prefix="/new/roles">
         <file>src/archer2_up.gif</file>
     </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/redbuff.png</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/bluebuff.png</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/firebuff.png</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/waterbuff.png</file>
+    </qresource>
 </RCC>
