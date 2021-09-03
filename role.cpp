@@ -88,9 +88,9 @@ void Role::updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, co
     }
 }
 
-void Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
+bool Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
     if (this->teamID() == t_target->teamID()) {
-        return;
+        return false;
     }
 
     if (t_target->isShowingAttackable() == true && this != nullptr) {
@@ -116,8 +116,10 @@ void Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
 
         this->setroundFinished(true);
         t_target->settleLifeLoss(this->damage());
-        return;
+        return true;
     }
+
+    return false;
 }
 
 void Role::settleBuff() {
@@ -129,6 +131,7 @@ void Role::settleBuff() {
         item->damageBuff(m_damage);
         item->defenseBuff(m_defense);
     }
+    m_buffs.clear();
 }
 
 void Role::setShowingAttackable(bool t_value) {

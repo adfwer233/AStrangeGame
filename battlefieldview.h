@@ -8,8 +8,10 @@
 #include "fallingobject.h"
 #include "infantary.h"
 #include "archer.h"
+#include "algorithm.h"
 #include <QGraphicsView>
 #include <QVector>
+#include <QMap>
 #include <QTimer>
 class BattlefieldView : public QGraphicsView {
     Q_OBJECT
@@ -47,17 +49,22 @@ protected:
     void addBuffItem(FallingObject* t_buff, int t_x, int t_y);
     void updateBattlefield();
 
+    int memberCount(coordinateStatus t_team);
+    void actionFinished();
+
     // information about the map
     int  m_mapwidth;
     int  m_mapheight;
     void updateMapStatus();
 
+    // map status arrays
     QVector<QVector<coordinateStatus>> m_mapStatus;
     QVector<QVector<GraphUnit*>>       m_topUnit;
     QVector<QVector<actionStatus>>     m_actionStatus;
 
+    // handle the moving system
     Role* m_observingRole;
-    void  handleMoving(Role* t_role, GraphLand* t_land);
+    bool  handleMoving(Role* t_role, GraphLand* t_land);
 
 
     // information about the round system
@@ -67,6 +74,10 @@ protected:
     void initalizeRound(coordinateStatus t_team);
     bool checkOperability();
 
+    // actionPoint system
+    int m_maxActionPoint;
+    int m_actionPoint;
+    
     QTimer* m_roleFlashTimer;
 };
 

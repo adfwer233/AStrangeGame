@@ -7,8 +7,10 @@
 #include <QWidget>
 
 struct roundStatus {
-    int roundNumber;
+    int              roundNumber;
     coordinateStatus teamInRound;
+    int              maxActionPoint;
+    int              actionPoint;
 };
 
 class roundStatusPanel : public QWidget {
@@ -20,12 +22,12 @@ public:
 signals:
     void endTheRound();
 
-
 private:
-    int              m_roundNumber;
+    roundStatus      m_status;
     QLabel*          m_roundNumberLabel;
-    coordinateStatus m_teamInRound;
     QLabel*          m_teamLabel;
+    QLabel*          m_maxActionPointLabel;
+    QLabel*          m_actionPointLabel;
     QPushButton*     m_endRoundButton;
 };
 

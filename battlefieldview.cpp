@@ -16,9 +16,6 @@
 BattlefieldView::BattlefieldView(QWidget* parent) : QGraphicsView(parent) {
     m_roundNumber    = 0;
     m_roleFlashTimer = new QTimer(this);
-
-    // setViewportUpdateMode(QGraphicsView::ViewportUpdateMode::SmartViewportUpdate);
-    // setViewportUpdateMode()
 }
 
 void BattlefieldView::mousePressEvent(QMouseEvent* event) {
@@ -32,18 +29,33 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
     if (graphUnit != nullptr && m_observingRole != nullptr) {
         if (graphUnit->inherits("normalLand")) {
             GraphLand* graphland = static_cast<GraphLand*>(graphUnit);
-            handleMoving(m_observingRole, graphland);
+
+            bool tmp = m_actionPoint >= Role::MOVE_ACTION_POINT;
+            if(tmp && handleMoving(m_observingRole, graphland))  {
+                m_actionPoint -= Role::MOVE_ACTION_POINT;
+                actionFinished();
+            }
         }
 
         if (graphUnit->inherits("Role")) {
             Role* role = static_cast<Role*>(graphUnit);
-            m_observingRole->handleAttack(role, getPath(m_observingRole, role));
+
+            bool tmp = m_actionPoint >= role->ATTACK_ACTION_POINT;
+            if (tmp && m_observingRole->handleAttack(role, getPath(m_observingRole, role))) {
+                m_actionPoint -= Role::ATTACK_ACTION_POINT;
+                actionFinished();
+            }
         }
 
         if (graphUnit->inherits("FallingObject")) {
             FallingObject* fallingBuff = static_cast<FallingObject*>(graphUnit);
-            m_observingRole->addBuff(fallingBuff->getBuff());
-            handleMoving(m_observingRole, fallingBuff);
+
+            bool tmp = m_actionPoint >= Role::MOVE_ACTION_POINT;
+            if (tmp && handleMoving(m_observingRole, fallingBuff)){
+                m_observingRole->addBuff(fallingBuff->getBuff());
+                m_actionPoint -= Role::MOVE_ACTION_POINT;
+                actionFinished();
+            }
         }
 
         m_observingRole->clearFocus();
@@ -247,7 +259,7 @@ void BattlefieldView::closeAttackableRoles() {
 /**
  * BattlefieldView
  * clear the died roles and make them unfocusable
- * when one team has no role living, emit the game overslot
+ * when one team has no role living, emit the game over slot
  */
 void BattlefieldView::updateBattlefield() {
     auto items = this->scene()->items();
@@ -285,7 +297,7 @@ void BattlefieldView::updateBattlefield() {
  * @param  {Role*} t_role      : 想要移动的角色指针
  * @param  {GraphLand*} t_land : 目标地点
  */
-void BattlefieldView::handleMoving(Role* t_role, GraphLand* t_land) {
+bool BattlefieldView::handleMoving(Role* t_role, GraphLand* t_land) {
     if (t_land->isShowingReachability() == true && t_role != nullptr) {
 
         auto items = getPath(t_role, t_land);
@@ -308,9 +320,12 @@ void BattlefieldView::handleMoving(Role* t_role, GraphLand* t_land) {
         t_role->setPos(this->pos());
         t_role->setCoordinate(t_land->coordinateX(), t_land->coordinateY());
         t_role = nullptr;
+
+        this->scene()->update(scene()->itemsBoundingRect());
+        return true;
     }
 
-    this->scene()->update(scene()->itemsBoundingRect());
+    return false;
 }
 
 /**
@@ -409,7 +424,11 @@ void BattlefieldView::initalizeRound(coordinateStatus t_team) {
         }
     }
 
-    emit roundStatudChanged(roundStatus{ m_roundNumber, m_activeTeam });
+
+    m_maxActionPoint = memberCount(t_team);
+    m_actionPoint = m_maxActionPoint;
+
+    emit roundStatudChanged(roundStatus{ m_roundNumber, m_activeTeam, m_maxActionPoint, m_actionPoint});
 }
 
 void BattlefieldView::nextRound() {
@@ -445,4 +464,29 @@ bool BattlefieldView::checkOperability() {
         return true;
     else
         return false;
+}
+
+int BattlefieldView::memberCount(coordinateStatus t_team) {
+    if (t_team != teamOne && t_team != teamTwo)
+        throw "invalid teamID";
+
+    if (scene() == nullptr) {
+        qDebug() << "running";
+        throw "no scene";
+    }
+
+    int result = 0;
+    for (auto item : scene()->items()) {
+        auto role = dynamic_cast<Role*>(item);
+        if (role != nullptr) {
+            if (role->teamID() == t_team)
+                result += 1;
+        }
+    }
+
+    return result;
+}
+
+void BattlefieldView::actionFinished() {
+    emit roundStatudChanged(roundStatus{ m_roundNumber, m_activeTeam, m_maxActionPoint, m_actionPoint});
 }

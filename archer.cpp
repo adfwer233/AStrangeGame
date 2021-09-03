@@ -62,10 +62,10 @@ void Archer::updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, 
                 }
 }
 
-void Archer::handleAttack(Role* t_target, QList<GraphUnit*>) {
+bool Archer::handleAttack(Role* t_target, QList<GraphUnit*>) {
 
     if (this->teamID() == t_target->teamID()) {
-        return;
+        return false;
     }
 
     if (t_target->isShowingAttackable() == true && this != nullptr) {
@@ -73,6 +73,8 @@ void Archer::handleAttack(Role* t_target, QList<GraphUnit*>) {
         arrow->animationReact(this->pos(), t_target->pos(), scene());
         t_target->settleLifeLoss(this->damage());
         this->setroundFinished(true);
-        return;
+        return true;
     }
+
+    return false;
 }

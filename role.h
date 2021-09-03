@@ -5,7 +5,7 @@
 #include "roleskill.h"
 #include "statusConstant.h"
 #include "rolebuff.h"
-
+#include "graphland.h"
 #include <QGraphicsItem>
 #include <QString>
 #include <QVector>
@@ -14,6 +14,10 @@
 class Role : public GraphUnit {
     Q_OBJECT
 public:
+
+    static const int MOVE_ACTION_POINT = 1;
+    static const int ATTACK_ACTION_POINT = 1;
+
     Role(int t_x, int t_y, int t_team);
 
     virtual QRectF boundingRect() const override;
@@ -42,7 +46,7 @@ public:
     // the virtual functions 
     virtual void settleLifeLoss(int t_damage);
     virtual void updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, const QVector<QVector<coordinateStatus>>& t_coordinate);
-    virtual void handleAttack(Role* t_target, QList<GraphUnit*> t_list); 
+    virtual bool handleAttack(Role* t_target, QList<GraphUnit*> t_list); 
 
 protected:
     // basic properties for roles
