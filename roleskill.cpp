@@ -3,6 +3,7 @@
 #include "role.h"
 #include "flightequipment.h"
 #include <QGraphicsScene>
+#include <QDebug>
 
 RoleSkill::RoleSkill(QObject *parent) : QObject(parent)
 {
@@ -59,8 +60,8 @@ void Explosion::releaseSkill(Role* t_sender, QGraphicsScene* t_scene) {
         for (int j = 0; j < map[i].size(); j++) {
             if (std::max(abs(i - posx), abs(j - posy)) <= 1){
                 if(map[i][j]->inherits("Obstacle")) {
-                    normalLand* newLand = new normalLand(posx, posy);
-                    newLand->setPos(posx * GraphUnit::INIT_SIZE, posy * GraphUnit::INIT_SIZE);
+                    normalLand* newLand = new normalLand(i, j);
+                    newLand->setPos(i * GraphUnit::INIT_SIZE, j * GraphUnit::INIT_SIZE);
                     t_scene->addItem(newLand);
                     t_scene->removeItem(map[i][j]);
                 }
@@ -82,6 +83,7 @@ void SwordDance::releaseSkill(Role* t_sender, QGraphicsScene* t_scene) {
                     auto role = static_cast<Role*>(map[i][j]);
                     if (role->teamID() != t_sender->teamID()) {
                         role->settleLifeLoss(t_sender->damage() + 5);
+                        qDebug() << "sword dance running";
                     }
                 }
             }

@@ -10,11 +10,10 @@ void RoleStatusPanel::initalizer() {
     m_defenseLabel  = new QLabel();
     m_teamLabel     = new QLabel();
     m_roundLabel    = new QLabel();
-
     m_attackButton = new QPushButton();
     m_moveButton   = new QPushButton();
-
     m_mainLayout = new QGridLayout();
+    m_actionMenu = nullptr;
 
     m_mainLayout->addWidget(new QLabel(tr("队伍")), 0, 0, 1, 1);
     m_mainLayout->addWidget(m_teamLabel, 0, 1, 1, 2);
@@ -77,6 +76,7 @@ void RoleStatusPanel::updateByRole(Role* const t_role) {
     m_damageLabel->setText(tr(std::to_string(t_role->damage()).c_str()));
     m_defenseLabel->setText(tr(std::to_string(t_role->defense()).c_str()));
 
+
     if (t_role->teamID() == teamOne) {
         m_teamLabel->setText(tr("队伍一"));
     }
@@ -102,6 +102,8 @@ void RoleStatusPanel::updateByRole(Role* const t_role) {
         for (auto item : t_role->skillList()) {
             QPushButton* button = new QPushButton(this);
             button->setText(item->skillName());
+            tmpLayout->addWidget(button);
+            connect(button, &QPushButton::clicked, [=]{ t_role->releaseSkill(item); });
         }
 
         m_actionMenu->setLayout(tmpLayout);

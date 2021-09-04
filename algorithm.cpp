@@ -168,10 +168,9 @@ QVector<QVector<GraphUnit*>> Algorithm::getTopItem(QGraphicsScene* t_scene) {
     }
 
     QVector<QVector<GraphUnit*>> answer;
-    answer.resize(width);
+    answer.resize(width + 1);
     for (auto &x : answer) {
-        x.resize(height);
-        qFill(x.begin(), x.end(), nullptr);
+        x.resize(height + 1);
     }
     
     for (auto item : t_scene->items()) {

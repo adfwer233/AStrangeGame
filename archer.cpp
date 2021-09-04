@@ -18,6 +18,10 @@ Archer::Archer(int t_x, int t_y, int t_team) : Role(t_x, t_y, t_team) {
         m_movie = new QMovie(":/new/roles/src/archer2_right.gif");
     }
     m_movie->start();
+
+    m_skills.push_back(new ArrowRain(this));
+    m_skills.push_back(new Explosion(this));
+    m_skills.push_back(new SwordDance(this));
 }
 
 void Archer::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {

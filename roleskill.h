@@ -32,7 +32,7 @@ public:
 
 signals:
 
-private:
+protected:
     QString m_skillName;
     QString m_description;
 
@@ -41,7 +41,9 @@ private:
 class ArrowRain : public RoleSkill {
     Q_OBJECT
 public:
-    explicit ArrowRain(QObject* parent = nullptr) : RoleSkill(parent) {}
+    explicit ArrowRain(QObject* parent = nullptr) : RoleSkill(parent) {
+        m_skillName = tr("ArrowRain");
+    }
 
     virtual int actionPointCost() const override {
         return 3;
@@ -57,7 +59,9 @@ public:
 class Explosion : public RoleSkill {
     Q_OBJECT
 public:
-    explicit Explosion(QObject* parent = nullptr) : RoleSkill(parent) {}
+    explicit Explosion(QObject* parent = nullptr) : RoleSkill(parent) {
+        m_skillName = tr("Explosion");
+    }
 
     virtual int actionPointCost() const override {
         return 5;
@@ -73,7 +77,9 @@ public:
 class SwordDance : public RoleSkill {
     Q_OBJECT
 public:
-    explicit SwordDance(QObject* parent = nullptr) : RoleSkill(parent) {}
+    explicit SwordDance(QObject* parent = nullptr) : RoleSkill(parent) {
+        m_skillName = tr("SwordDance");
+    }
 
     virtual int actionPointCost() const override {
         return 2;
