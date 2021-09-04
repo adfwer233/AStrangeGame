@@ -13,6 +13,7 @@ Role::Role(int t_x, int t_y, int t_team) : GraphUnit(t_x, t_y) {
     m_damage        = 20 + rand() % 5;
     m_defense       = 5;
     m_teamID        = t_team == 0 ? teamOne : teamTwo;
+    m_fullmagicValue = m_magicValue = 100;
 
     m_isShowingAttackable = 0;
 }
@@ -125,13 +126,17 @@ bool Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
 void Role::settleBuff() {
     for (auto item : m_buffs) {
         item->lifeValueBuff(m_lifeValue);
-        m_lifeValue = std::max(m_lifeValue, m_fullLifeValue);
+        m_lifeValue = std::min(m_lifeValue, m_fullLifeValue);
         item->magicValueBuff(m_magicValue);
-        m_magicValue = std::max(m_magicValue, m_fullmagicValue);
+        m_magicValue = std::min(m_magicValue, m_fullmagicValue);
         item->damageBuff(m_damage);
         item->defenseBuff(m_defense);
     }
     m_buffs.clear();
+}
+
+void Role::releaseSkill(RoleSkill* t_skill) {
+    t_skill->releaseSkill(this, scene());
 }
 
 void Role::setShowingAttackable(bool t_value) {
@@ -189,4 +194,12 @@ void Role::repaint() {
 
 void Role::addBuff(RoleBuff* t_buff) {
     m_buffs.push_back(t_buff);
+}
+
+void Role::addSkill(RoleSkill* t_skill) {
+    m_skills.push_back(t_skill);
+}
+
+QList<RoleSkill*> Role::skillList() const {
+    return m_skills;
 }

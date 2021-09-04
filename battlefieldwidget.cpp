@@ -40,6 +40,10 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
     // hide the panel when the land is chosen
     connect(m_battlefieldView, &BattlefieldView::landChosen, this, [=] { this->m_roleStatusPanel->hide(); });
 
+    // connect the attack and move button in the panel with the battlefieldview
+    connect(m_roleStatusPanel, &RoleStatusPanel::attackAction, m_battlefieldView, &BattlefieldView::showAttackableRoles);
+    connect(m_roleStatusPanel, &RoleStatusPanel::moveAction, m_battlefieldView, &BattlefieldView::showReachableLands);
+
     // update other message
     connect(m_battlefieldView, &BattlefieldView::focusChanged, this, &BattlefieldWidget::updateMessage);
 

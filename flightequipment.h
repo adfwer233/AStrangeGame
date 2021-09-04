@@ -11,7 +11,7 @@ public:
         setFlag(QGraphicsItem::ItemIsFocusable, false);
     }
 
-    virtual ~FlightEquipment() {
+    ~FlightEquipment() {
         delete m_image;
     }
 

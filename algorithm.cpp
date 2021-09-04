@@ -149,3 +149,45 @@ QList<QPair<int, int>> getPathList(const QVector<QVector<QPair<int, int>>> t_pre
 
     return result;
 }
+
+
+QVector<QVector<GraphUnit*>> Algorithm::getTopItem(QGraphicsScene* t_scene) {
+
+    if (t_scene == nullptr) {
+        throw "nullptr scene in the algorithm getTopItem";
+    }
+
+    int width = 0;
+    int height = 0;
+    for (auto item : t_scene->items()) {
+        auto unit = dynamic_cast<GraphUnit*>(item);
+        if (unit != nullptr) {
+            width = std::max(width, unit->coordinateX());
+            height = std::max(height, unit->coordinateY());
+        }
+    }
+
+    QVector<QVector<GraphUnit*>> answer;
+    answer.resize(width);
+    for (auto &x : answer) {
+        x.resize(height);
+        qFill(x.begin(), x.end(), nullptr);
+    }
+    
+    for (auto item : t_scene->items()) {
+        auto unit = dynamic_cast<GraphUnit*>(item);
+        if (unit != nullptr) {
+            int posx = unit->coordinateX();
+            int posy = unit->coordinateY();
+            if (answer[posx][posy] == nullptr) {
+                answer[posx][posy] = unit;
+                continue;
+            }
+            else if (unit->zValue() > answer[posx][posy]->zValue()) {
+                answer[posx][posy] = unit;
+            }
+        }
+    }
+
+    return answer;
+}

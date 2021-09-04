@@ -3,8 +3,11 @@
 
 #include "role.h"
 #include <QWidget>
+#include <QLayout>
+#include <QGroupBox>
 #include <QLabel>
 #include <QProgressBar>
+#include <QPushButton>
 
 class RoleStatusPanel : public QWidget
 {
@@ -18,6 +21,8 @@ public:
     void updateByRole(Role* const);
 
 signals:
+    void moveAction(Role*);
+    void attackAction(Role*);
 
 private:
     QProgressBar* m_lifeValueBar;
@@ -27,6 +32,11 @@ private:
     QLabel* m_roundLabel;
     QLabel* m_teamLabel;
     QLabel* m_descriptionLabel;
+    
+    QGridLayout* m_mainLayout;
+    QGroupBox* m_actionMenu;
+    QPushButton* m_attackButton;
+    QPushButton* m_moveButton;
     void initalizer();
 };
 

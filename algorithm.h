@@ -2,9 +2,11 @@
 #define ALGORITHM_H
 
 #include "statusConstant.h"
+#include "graphunit.h"
 #include <QVector>
 #include <QList>
 #include <QPair>
+#include <QGraphicsScene>
 
 class Algorithm {
 public:
@@ -18,6 +20,8 @@ public:
                             const std::pair<int, int> t_start);
 
     static QList<QPair<int, int>> getPathList(const QVector<QVector<QPair<int, int>>> t_prev, QPair<int, int> t_start, QPair<int, int> t_end);
+
+    static QVector<QVector<GraphUnit*>> getTopItem(QGraphicsScene* t_scene);
 };
 
 #endif  // ALGORITHM_H

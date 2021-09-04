@@ -43,6 +43,10 @@ public:
     void addBuff(RoleBuff* t_buff);
     void settleBuff();
 
+    // member functions of skill system
+    void addSkill(RoleSkill* t_skill);
+    QList<RoleSkill*> skillList() const;
+
     // the virtual functions 
     virtual void settleLifeLoss(int t_damage);
     virtual void updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, const QVector<QVector<coordinateStatus>>& t_coordinate);
@@ -66,11 +70,15 @@ protected:
     // buff system
     QList<RoleBuff*> m_buffs;
 
+    //skill system
+    QList<RoleSkill*> m_skills;
+
 signals:
     void roleStatueChanged(Role*);
 
 public slots:
     void repaint();
+    void releaseSkill(RoleSkill*);
 };
 
 #endif  // ROLE_H

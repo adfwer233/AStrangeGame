@@ -31,9 +31,10 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
             GraphLand* graphland = static_cast<GraphLand*>(graphUnit);
 
             bool tmp = m_actionPoint >= Role::MOVE_ACTION_POINT;
-            if(tmp && handleMoving(m_observingRole, graphland))  {
+            if (tmp && handleMoving(m_observingRole, graphland)) {
                 m_actionPoint -= Role::MOVE_ACTION_POINT;
                 actionFinished();
+                m_observingRole->setroundFinished(true);
             }
         }
 
@@ -44,6 +45,7 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
             if (tmp && m_observingRole->handleAttack(role, getPath(m_observingRole, role))) {
                 m_actionPoint -= Role::ATTACK_ACTION_POINT;
                 actionFinished();
+                m_observingRole->setroundFinished(true);
             }
         }
 
@@ -51,10 +53,11 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
             FallingObject* fallingBuff = static_cast<FallingObject*>(graphUnit);
 
             bool tmp = m_actionPoint >= Role::MOVE_ACTION_POINT;
-            if (tmp && handleMoving(m_observingRole, fallingBuff)){
+            if (tmp && handleMoving(m_observingRole, fallingBuff)) {
                 m_observingRole->addBuff(fallingBuff->getBuff());
                 m_actionPoint -= Role::MOVE_ACTION_POINT;
                 actionFinished();
+                m_observingRole->setroundFinished(true);
             }
         }
 
@@ -87,11 +90,10 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
             Role* t_role = static_cast<Role*>(graphUnit);
             if (t_role->lifeValue() > 0) {
                 emit roleChosen(t_role);
-                qDebug() << "Before :" << t_role->lifeValue();
-                if (t_role->isroundFinished() == false) {
-                    showReachableLands(t_role);
-                    showAttackableRoles(t_role);
-                }
+                // if (t_role->isroundFinished() == false) {
+                //     showReachableLands(t_role);
+                //     showAttackableRoles(t_role);
+                // }
             }
         }
     }
@@ -188,7 +190,7 @@ void BattlefieldView::updateMapStatus() {
         auto unit = dynamic_cast<GraphUnit*>(item);
         if (unit != nullptr) {
             if (unit->inherits("Role")) {
-                auto role = static_cast<Role*>(unit);
+                auto role                                             = static_cast<Role*>(unit);
                 m_mapStatus[role->coordinateX()][role->coordinateY()] = role->teamID() == teamOne ? teamOne : teamTwo;
             }
 
@@ -315,7 +317,7 @@ bool BattlefieldView::handleMoving(Role* t_role, GraphLand* t_land) {
 
         if (t_land->inherits("FallingObject"))
             scene()->removeItem(t_land);
-        
+
         t_role->setroundFinished(true);
         t_role->setPos(this->pos());
         t_role->setCoordinate(t_land->coordinateX(), t_land->coordinateY());
@@ -424,11 +426,10 @@ void BattlefieldView::initalizeRound(coordinateStatus t_team) {
         }
     }
 
-
     m_maxActionPoint = memberCount(t_team);
-    m_actionPoint = m_maxActionPoint;
+    m_actionPoint    = m_maxActionPoint;
 
-    emit roundStatudChanged(roundStatus{ m_roundNumber, m_activeTeam, m_maxActionPoint, m_actionPoint});
+    emit roundStatudChanged(roundStatus{ m_roundNumber, m_activeTeam, m_maxActionPoint, m_actionPoint });
 }
 
 void BattlefieldView::nextRound() {
@@ -488,5 +489,5 @@ int BattlefieldView::memberCount(coordinateStatus t_team) {
 }
 
 void BattlefieldView::actionFinished() {
-    emit roundStatudChanged(roundStatus{ m_roundNumber, m_activeTeam, m_maxActionPoint, m_actionPoint});
+    emit roundStatudChanged(roundStatus{ m_roundNumber, m_activeTeam, m_maxActionPoint, m_actionPoint });
 }
