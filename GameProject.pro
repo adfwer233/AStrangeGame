@@ -26,6 +26,7 @@ SOURCES += \
     graphland.cpp \
     graphunit.cpp \
     infantary.cpp \
+    lifebar.cpp \
     main.cpp \
     mainwindow.cpp \
     normalland.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     graphland.h \
     graphunit.h \
     infantary.h \
+    lifebar.h \
     mainwindow.h \
     normalland.h \
     obstacle.h \

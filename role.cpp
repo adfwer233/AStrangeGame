@@ -1,4 +1,5 @@
 #include "role.h"
+#include "lifebar.h"
 #include <QCursor>
 #include <QDebug>
 #include <QGraphicsScene>
@@ -55,10 +56,16 @@ void Role::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
 }
 
 void Role::settleLifeLoss(int t_damage) {
+
+    if (this->lifeValue() <= 0) {
+        return;
+    }
+
     int loss = t_damage - this->defense();
     if (loss < 0)
         return;
     else {
+        Algorithm::LifeChangeAnimation(this, -loss);
         this->m_lifeValue -= loss;
         emit roleStatueChanged(this);
     }
@@ -125,7 +132,11 @@ bool Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
 
 void Role::settleBuff() {
     for (auto item : m_buffs) {
+        int tmp_life = m_lifeValue;
         item->lifeValueBuff(m_lifeValue);
+        if (tmp_life != m_lifeValue) {
+            Algorithm::LifeChangeAnimation(this, tmp_life, m_lifeValue);
+        }
         m_lifeValue = std::min(m_lifeValue, m_fullLifeValue);
         item->magicValueBuff(m_magicValue);
         m_magicValue = std::min(m_magicValue, m_fullmagicValue);

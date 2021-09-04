@@ -8,6 +8,7 @@
 #include <QPair>
 #include <QGraphicsScene>
 
+class Role;
 class Algorithm {
 public:
     Algorithm();
@@ -22,6 +23,9 @@ public:
     static QList<QPair<int, int>> getPathList(const QVector<QVector<QPair<int, int>>> t_prev, QPair<int, int> t_start, QPair<int, int> t_end);
 
     static QVector<QVector<GraphUnit*>> getTopItem(QGraphicsScene* t_scene);
+
+    static void LifeChangeAnimation(Role* t_role, int t_delta);
+    static void LifeChangeAnimation(Role* t_role, int from, int to);
 };
 
 #endif  // ALGORITHM_H

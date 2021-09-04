@@ -1,10 +1,12 @@
 #include "algorithm.h"
-
+#include "lifebar.h"
+#include "role.h"
+#include <QDebug>
+#include <QPropertyAnimation>
 #include <QtAlgorithms>
 #include <limits>
 #include <numeric>
 #include <queue>
-#include <QDebug>
 Algorithm::Algorithm() {}
 
 void Algorithm::findPathBFS(const QVector<QVector<coordinateStatus>>& t_map, QVector<QVector<actionStatus>>& t_actionResult,
@@ -60,7 +62,7 @@ void Algorithm::findPathBFS(const QVector<QVector<coordinateStatus>>& t_map, QVe
             if (distance[i][j] <= t_maxMoveLength && t_map[i][j] == reachable) {
                 t_actionResult[i][j] = moveable;
             }
-            
+
             if (distance[i][j] <= t_maxAttackLength) {
                 if ((t_map[i][j] == teamOne || t_map[i][j] == teamTwo) && t_map[i][j] != t_map[t_start.first][t_start.second])
                     t_actionResult[i][j] = attackable;
@@ -119,7 +121,7 @@ void Algorithm::findPathBFS(const QVector<QVector<coordinateStatus>>& t_map, QVe
             if (distance[i][j] <= t_maxMoveLength && t_map[i][j] == reachable) {
                 t_actionResult[i][j] = moveable;
             }
-            
+
             if (distance[i][j] <= t_maxAttackLength) {
                 if ((t_map[i][j] == teamOne || t_map[i][j] == teamTwo) && t_map[i][j] != t_map[t_start.first][t_start.second])
                     t_actionResult[i][j] = attackable;
@@ -150,29 +152,28 @@ QList<QPair<int, int>> getPathList(const QVector<QVector<QPair<int, int>>> t_pre
     return result;
 }
 
-
 QVector<QVector<GraphUnit*>> Algorithm::getTopItem(QGraphicsScene* t_scene) {
 
     if (t_scene == nullptr) {
         throw "nullptr scene in the algorithm getTopItem";
     }
 
-    int width = 0;
+    int width  = 0;
     int height = 0;
     for (auto item : t_scene->items()) {
         auto unit = dynamic_cast<GraphUnit*>(item);
         if (unit != nullptr) {
-            width = std::max(width, unit->coordinateX());
+            width  = std::max(width, unit->coordinateX());
             height = std::max(height, unit->coordinateY());
         }
     }
 
     QVector<QVector<GraphUnit*>> answer;
     answer.resize(width + 1);
-    for (auto &x : answer) {
+    for (auto& x : answer) {
         x.resize(height + 1);
     }
-    
+
     for (auto item : t_scene->items()) {
         auto unit = dynamic_cast<GraphUnit*>(item);
         if (unit != nullptr) {
@@ -189,4 +190,32 @@ QVector<QVector<GraphUnit*>> Algorithm::getTopItem(QGraphicsScene* t_scene) {
     }
 
     return answer;
+}
+
+void Algorithm::LifeChangeAnimation(Role* t_role, int t_delta) {
+
+    int endValue = std::max(0, t_role->lifeValue() + t_delta);
+    endValue     = std::min(endValue, t_role->fullLifeValue());
+
+    LifeChangeAnimation(t_role, t_role->lifeValue(), endValue);
+}
+
+void Algorithm::LifeChangeAnimation(Role* t_role, int from, int to) {
+
+    LifeBar* lifeBar = new LifeBar();
+    lifeBar->setMaxValue(t_role->fullLifeValue());
+    lifeBar->setValue(t_role->lifeValue());
+    lifeBar->setPos(t_role->pos());
+    lifeBar->setZValue(1.1);
+    t_role->scene()->addItem(lifeBar);
+
+    QPropertyAnimation* animaton = new QPropertyAnimation(lifeBar, "value");
+    animaton->setStartValue(from);
+    animaton->setEndValue(to);
+    animaton->setDuration(500);
+    animaton->start(QPropertyAnimation::DeleteWhenStopped);
+    QObject::connect(animaton, &QPropertyAnimation::finished, [=] {
+        t_role->scene()->removeItem(lifeBar);
+        t_role->scene()->update();
+    });
 }
