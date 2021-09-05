@@ -233,8 +233,6 @@ void Algorithm::LifeChangeAnimation(Role* t_role, int from, int to) {
  */
 void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
 
-    qDebug() << "basic AI running" << endl;
-
     QList<Role*> enemyList;
     for (auto item : t_view->scene()->items()) {
         auto role = dynamic_cast<Role*>(item);
@@ -244,7 +242,7 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
     }
 
     auto distance = [=](Role* other) {
-        return abs(other->coordinateX() - t_role->coordinateY()) + abs(other->coordinateX() - t_role->coordinateY());
+        return abs(other->coordinateX() - t_role->coordinateX()) + abs(other->coordinateY() - t_role->coordinateY());
     };
 
     int   minDistance = 1000;
@@ -261,13 +259,15 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
 
     // attack is the first place choice
     if (t_view->m_actionStatus[target->coordinateX()][target->coordinateY()] == attackable) {
+        target->setShowingAttackable(true);
         t_role->handleAttack(target, t_view->getPath(t_role, target));
         t_view->m_actionPoint -= Role::ATTACK_ACTION_POINT;
         return;
     }
 
-    GraphLand* landTarget   = nullptr;
-    auto       landDistance = [=](GraphLand* t_land) {
+    GraphLand* landTarget = nullptr;
+
+    auto landDistance = [=](GraphLand* t_land) {
         return abs(t_land->coordinateX() - target->coordinateX()) + abs(t_land->coordinateY() - target->coordinateY());
     };
 
@@ -283,9 +283,13 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
     }
 
     if (landTarget != nullptr) {
+        landTarget->setShowingRechability(true);
         t_view->handleMoving(t_role, landTarget);
         t_view->m_actionPoint -= Role::MOVE_ACTION_POINT;
+        return;
     }
+
+    emit t_role->actionFinished();
 }
 
 void Algorithm::AIcontrol(BattlefieldView* t_view) {
@@ -294,7 +298,7 @@ void Algorithm::AIcontrol(BattlefieldView* t_view) {
     QList<Role*> roleList;
     for (auto item : t_view->scene()->items()) {
         auto role = dynamic_cast<Role*>(item);
-        if (role != nullptr && role->teamID() != ctrlTeam) {
+        if (role != nullptr && role->teamID() == ctrlTeam) {
             roleList.push_back(role);
         }
     }
@@ -303,8 +307,18 @@ void Algorithm::AIcontrol(BattlefieldView* t_view) {
         QObject::connect(roleList[i], &Role::actionFinished, [=] { roleList[i + 1]->AIaction(t_view); });
     }
 
-    QObject::connect(roleList[roleList.size() - 1], &Role::actionFinished, [=] { t_view->nextRound(); });
     roleList[0]->AIaction(t_view);
+    QObject::connect(roleList[roleList.size() - 1], &Role::actionFinished, [=] { 
+        t_view->nextRound(); 
+        t_view->closeAttackableRoles();
+        t_view->closeReachableLands();
+
+        for (auto item : roleList) {
+            QObject::disconnect(item, &Role::actionFinished, nullptr, nullptr);
+        }
+    });
+
+
 }
 
 void Algorithm::removeDeath(Role* t_role) {
