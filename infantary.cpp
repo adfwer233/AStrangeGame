@@ -15,7 +15,7 @@ Infantary::Infantary(int t_x, int t_y, int t_team) : Role(t_x, t_y, t_team) {
     m_movie->start();
 }
 
-void Infantary::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
+void Infantary::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
     if (lifeValue() <= 0) {
         painter->setBrush(Qt::magenta);
         painter->drawEllipse(-INIT_SIZE / 2, -INIT_SIZE / 2, INIT_SIZE, INIT_SIZE);

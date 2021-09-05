@@ -101,7 +101,7 @@ bool Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
         return false;
     }
 
-    if (t_target->isShowingAttackable() == true && this != nullptr) {
+	if (t_target->isShowingAttackable() == true) {
 
         QSequentialAnimationGroup* animationGroup = new QSequentialAnimationGroup();
         for (int i = 1; i < t_list.size(); i++) {

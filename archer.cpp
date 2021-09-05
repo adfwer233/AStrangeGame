@@ -24,7 +24,7 @@ Archer::Archer(int t_x, int t_y, int t_team) : Role(t_x, t_y, t_team) {
     m_skills.push_back(new SwordDance(this));
 }
 
-void Archer::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
+void Archer::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
     if (lifeValue() <= 0) {
         painter->setBrush(Qt::magenta);
         painter->drawEllipse(-INIT_SIZE / 2, -INIT_SIZE / 2, INIT_SIZE, INIT_SIZE);
@@ -72,7 +72,7 @@ bool Archer::handleAttack(Role* t_target, QList<GraphUnit*>) {
         return false;
     }
 
-    if (t_target->isShowingAttackable() == true && this != nullptr) {
+	if (t_target->isShowingAttackable() == true) {
         FlightEquipmentArrow* arrow = new FlightEquipmentArrow();
         arrow->animationReact(this->pos(), t_target->pos(), scene());
         t_target->settleLifeLoss(this->damage());

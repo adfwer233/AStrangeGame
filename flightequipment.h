@@ -7,7 +7,7 @@
 class FlightEquipment : public QGraphicsObject {
     Q_OBJECT
 public:
-    FlightEquipment(QObject* parent = nullptr) {
+	FlightEquipment(QGraphicsItem* parent = nullptr) : QGraphicsObject(parent) {
         setFlag(QGraphicsItem::ItemIsFocusable, false);
     }
 

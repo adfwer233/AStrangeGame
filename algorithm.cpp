@@ -20,8 +20,8 @@ void Algorithm::findPathBFS(const QVector<QVector<coordinateStatus>>& t_map, QVe
     for (int i = 0; i < t_map.size(); i++) {
         distance[i].resize(t_map[i].size());
         visited[i].resize(t_map[i].size());
-        qFill(distance[i].begin(), distance[i].end(), std::numeric_limits<int>::max());
-        qFill(visited[i].begin(), visited[i].end(), 0);
+		std::fill(distance[i].begin(), distance[i].end(), std::numeric_limits<int>::max());
+		std::fill(visited[i].begin(), visited[i].end(), 0);
     }
 
     que.push(t_start);
@@ -80,8 +80,8 @@ void Algorithm::findPathBFS(const QVector<QVector<coordinateStatus>>& t_map, QVe
     for (int i = 0; i < t_map.size(); i++) {
         distance[i].resize(t_map[i].size());
         visited[i].resize(t_map[i].size());
-        qFill(distance[i].begin(), distance[i].end(), std::numeric_limits<int>::max());
-        qFill(visited[i].begin(), visited[i].end(), 0);
+		std::fill(distance[i].begin(), distance[i].end(), std::numeric_limits<int>::max());
+		std::fill(visited[i].begin(), visited[i].end(), 0);
     }
 
     que.push(t_start);

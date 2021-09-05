@@ -15,6 +15,7 @@
 
 BattlefieldView::BattlefieldView(QWidget* parent) : QGraphicsView(parent) {
     m_roundNumber    = 0;
+    m_observingRole  = nullptr;
     m_roleFlashTimer = new QTimer(this);
 }
 
@@ -100,7 +101,7 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
     // QGraphicsView::mousePressEvent(event);
 }
 
-void BattlefieldView::resizeEvent(QResizeEvent* event) {
+void BattlefieldView::resizeEvent(QResizeEvent*) {
     QRectF boundary = scene()->itemsBoundingRect();
     this->fitInView(boundary, Qt::KeepAspectRatio);
 }
