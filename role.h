@@ -73,12 +73,11 @@ protected:
     //skill system
     QList<RoleSkill*> m_skills;
 
-    void deathProcess();
-
 signals:
     void roleStatueChanged(Role*);
     void actionFinished();
-    
+    void deathProcess(Role*);
+
 public slots:
     void repaint();
     void releaseSkill(RoleSkill*);

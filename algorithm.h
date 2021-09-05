@@ -31,6 +31,8 @@ public:
     static void basicAI(Role* t_role, BattlefieldView* t_view);
 
     static void AIcontrol(BattlefieldView* t_view);
+
+    static void removeDeath(Role*);
 };
 
 #endif  // ALGORITHM_H

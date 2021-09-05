@@ -57,10 +57,6 @@ void Role::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
 
 void Role::settleLifeLoss(int t_damage) {
 
-    if (this->lifeValue() <= 0) {
-        return;
-    }
-
     int loss = t_damage - this->defense();
     if (loss < 0)
         return;
@@ -70,13 +66,9 @@ void Role::settleLifeLoss(int t_damage) {
         emit roleStatueChanged(this);
 
         if (m_lifeValue <= 0) {
-            this->deathProcess();
+            emit deathProcess(this);
         }
     }
-}
-
-void Role::deathProcess() {
-    this->scene()->removeItem(this);
 }
 
 /**

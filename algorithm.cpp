@@ -2,8 +2,8 @@
 #include "battlefieldview.h"
 #include "lifebar.h"
 #include "role.h"
-#include <QObject>
 #include <QDebug>
+#include <QObject>
 #include <QPropertyAnimation>
 #include <QtAlgorithms>
 #include <limits>
@@ -216,19 +216,25 @@ void Algorithm::LifeChangeAnimation(Role* t_role, int from, int to) {
     animaton->setEndValue(to);
     animaton->setDuration(500);
     animaton->start(QPropertyAnimation::DeleteWhenStopped);
+
+    auto scene = t_role->scene();
+
     QObject::connect(animaton, &QPropertyAnimation::finished, [=] {
-        t_role->scene()->removeItem(lifeBar);
-        t_role->scene()->update();
+        scene->removeItem(lifeBar);
+        scene->update();
     });
 }
 
 /**
- * Algorithm 
+ * Algorithm
  * Basic AI algorithm , no skill
  * @param  {Role*} t_role            : the role will be controled
  * @param  {BattlefieldView*} t_view : BattlefieldView
  */
 void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
+
+    qDebug() << "basic AI running" << endl;
+
     QList<Role*> enemyList;
     for (auto item : t_view->scene()->items()) {
         auto role = dynamic_cast<Role*>(item);
@@ -260,18 +266,18 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
         return;
     }
 
-    GraphLand* landTarget = nullptr;
-    auto landDistance = [=](GraphLand* t_land) {
+    GraphLand* landTarget   = nullptr;
+    auto       landDistance = [=](GraphLand* t_land) {
         return abs(t_land->coordinateX() - target->coordinateX()) + abs(t_land->coordinateY() - target->coordinateY());
     };
-    
+
     minDistance = 1000;
     for (auto item : t_view->scene()->items()) {
         GraphLand* land = dynamic_cast<GraphLand*>(item);
         if (land != nullptr && t_view->m_actionStatus[land->coordinateX()][land->coordinateY()] == moveable) {
             if (landDistance(land) < minDistance) {
                 minDistance = landDistance(land);
-                landTarget = land;
+                landTarget  = land;
             }
         }
     }
@@ -294,13 +300,16 @@ void Algorithm::AIcontrol(BattlefieldView* t_view) {
     }
 
     for (int i = 0; i < roleList.size() - 1; i++) {
-        QObject::connect(roleList[i], &Role::actionFinished, [=]{
-            roleList[i + 1]->AIaction(t_view);
-        });
+        QObject::connect(roleList[i], &Role::actionFinished, [=] { roleList[i + 1]->AIaction(t_view); });
     }
 
+    QObject::connect(roleList[roleList.size() - 1], &Role::actionFinished, [=] { t_view->nextRound(); });
     roleList[0]->AIaction(t_view);
-    QObject::connect(roleList[roleList.size() - 1], &Role::actionFinished, [=]{
-        t_view->nextRound();
-    });
+}
+
+void Algorithm::removeDeath(Role* t_role) {
+    auto scene = t_role->scene();
+    scene->removeItem(t_role);
+    t_role->hide();
+    scene->update();
 }

@@ -124,6 +124,7 @@ void BattlefieldView::addRoleItem(Role* t_role, int t_x, int t_y) {
 
     connect(t_role, &Role::roleStatueChanged, this, [=] { emit roleChosen(t_role); });
     connect(t_role, &Role::roleStatueChanged, this, &BattlefieldView::updateBattlefield);
+    connect(t_role, &Role::deathProcess, [=]{ Algorithm::removeDeath(t_role); });
 }
 
 void BattlefieldView::drawBattlefield() {
@@ -450,6 +451,10 @@ void BattlefieldView::nextRound() {
                 role->settleBuff();
             }
         }
+    }
+
+    if (m_activeTeam == teamTwo) {
+        Algorithm::AIcontrol(this);
     }
 }
 
