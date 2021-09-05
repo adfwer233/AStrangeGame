@@ -68,7 +68,15 @@ void Role::settleLifeLoss(int t_damage) {
         Algorithm::LifeChangeAnimation(this, -loss);
         this->m_lifeValue -= loss;
         emit roleStatueChanged(this);
+
+        if (m_lifeValue <= 0) {
+            this->deathProcess();
+        }
     }
+}
+
+void Role::deathProcess() {
+    this->scene()->removeItem(this);
 }
 
 /**
@@ -121,7 +129,7 @@ bool Role::handleAttack(Role* t_target, QList<GraphUnit*> t_list) {
         }
 
         animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
-
+        connect(animationGroup, &QSequentialAnimationGroup::finished, this, &Role::actionFinished);
         this->setroundFinished(true);
         t_target->settleLifeLoss(this->damage());
         return true;
@@ -144,6 +152,10 @@ void Role::settleBuff() {
         item->defenseBuff(m_defense);
     }
     m_buffs.clear();
+}
+
+void Role::AIaction(BattlefieldView* t_view) {
+    Algorithm::basicAI(this, t_view);
 }
 
 void Role::releaseSkill(RoleSkill* t_skill) {

@@ -314,6 +314,7 @@ bool BattlefieldView::handleMoving(Role* t_role, GraphLand* t_land) {
             animationGroup->addAnimation(moveAnimation);
         }
 
+        QObject::connect(animationGroup, &QSequentialAnimationGroup::finished, t_role, &Role::actionFinished);
         animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
         if (t_land->inherits("FallingObject"))

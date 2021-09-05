@@ -1,6 +1,8 @@
 #include "algorithm.h"
+#include "battlefieldview.h"
 #include "lifebar.h"
 #include "role.h"
+#include <QObject>
 #include <QDebug>
 #include <QPropertyAnimation>
 #include <QtAlgorithms>
@@ -20,8 +22,8 @@ void Algorithm::findPathBFS(const QVector<QVector<coordinateStatus>>& t_map, QVe
     for (int i = 0; i < t_map.size(); i++) {
         distance[i].resize(t_map[i].size());
         visited[i].resize(t_map[i].size());
-		std::fill(distance[i].begin(), distance[i].end(), std::numeric_limits<int>::max());
-		std::fill(visited[i].begin(), visited[i].end(), 0);
+        std::fill(distance[i].begin(), distance[i].end(), std::numeric_limits<int>::max());
+        std::fill(visited[i].begin(), visited[i].end(), 0);
     }
 
     que.push(t_start);
@@ -80,8 +82,8 @@ void Algorithm::findPathBFS(const QVector<QVector<coordinateStatus>>& t_map, QVe
     for (int i = 0; i < t_map.size(); i++) {
         distance[i].resize(t_map[i].size());
         visited[i].resize(t_map[i].size());
-		std::fill(distance[i].begin(), distance[i].end(), std::numeric_limits<int>::max());
-		std::fill(visited[i].begin(), visited[i].end(), 0);
+        std::fill(distance[i].begin(), distance[i].end(), std::numeric_limits<int>::max());
+        std::fill(visited[i].begin(), visited[i].end(), 0);
     }
 
     que.push(t_start);
@@ -217,5 +219,88 @@ void Algorithm::LifeChangeAnimation(Role* t_role, int from, int to) {
     QObject::connect(animaton, &QPropertyAnimation::finished, [=] {
         t_role->scene()->removeItem(lifeBar);
         t_role->scene()->update();
+    });
+}
+
+/**
+ * Algorithm 
+ * Basic AI algorithm , no skill
+ * @param  {Role*} t_role            : the role will be controled
+ * @param  {BattlefieldView*} t_view : BattlefieldView
+ */
+void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
+    QList<Role*> enemyList;
+    for (auto item : t_view->scene()->items()) {
+        auto role = dynamic_cast<Role*>(item);
+        if (role != nullptr && role->teamID() != t_role->teamID()) {
+            enemyList.push_back(role);
+        }
+    }
+
+    auto distance = [=](Role* other) {
+        return abs(other->coordinateX() - t_role->coordinateY()) + abs(other->coordinateX() - t_role->coordinateY());
+    };
+
+    int   minDistance = 1000;
+    Role* target      = nullptr;
+    for (auto item : enemyList) {
+        if (distance(item) < minDistance) {
+            minDistance = distance(item);
+            target      = item;
+        }
+    }
+
+    t_view->updateMapStatus();
+    t_role->updateActionStatus(t_view->m_actionStatus, t_view->m_mapStatus);
+
+    // attack is the first place choice
+    if (t_view->m_actionStatus[target->coordinateX()][target->coordinateY()] == attackable) {
+        t_role->handleAttack(target, t_view->getPath(t_role, target));
+        t_view->m_actionPoint -= Role::ATTACK_ACTION_POINT;
+        return;
+    }
+
+    GraphLand* landTarget = nullptr;
+    auto landDistance = [=](GraphLand* t_land) {
+        return abs(t_land->coordinateX() - target->coordinateX()) + abs(t_land->coordinateY() - target->coordinateY());
+    };
+    
+    minDistance = 1000;
+    for (auto item : t_view->scene()->items()) {
+        GraphLand* land = dynamic_cast<GraphLand*>(item);
+        if (land != nullptr && t_view->m_actionStatus[land->coordinateX()][land->coordinateY()] == moveable) {
+            if (landDistance(land) < minDistance) {
+                minDistance = landDistance(land);
+                landTarget = land;
+            }
+        }
+    }
+
+    if (landTarget != nullptr) {
+        t_view->handleMoving(t_role, landTarget);
+        t_view->m_actionPoint -= Role::MOVE_ACTION_POINT;
+    }
+}
+
+void Algorithm::AIcontrol(BattlefieldView* t_view) {
+    const coordinateStatus ctrlTeam = teamTwo;
+
+    QList<Role*> roleList;
+    for (auto item : t_view->scene()->items()) {
+        auto role = dynamic_cast<Role*>(item);
+        if (role != nullptr && role->teamID() != ctrlTeam) {
+            roleList.push_back(role);
+        }
+    }
+
+    for (int i = 0; i < roleList.size() - 1; i++) {
+        QObject::connect(roleList[i], &Role::actionFinished, [=]{
+            roleList[i + 1]->AIaction(t_view);
+        });
+    }
+
+    roleList[0]->AIaction(t_view);
+    QObject::connect(roleList[roleList.size() - 1], &Role::actionFinished, [=]{
+        t_view->nextRound();
     });
 }

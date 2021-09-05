@@ -73,12 +73,16 @@ protected:
     //skill system
     QList<RoleSkill*> m_skills;
 
+    void deathProcess();
+
 signals:
     void roleStatueChanged(Role*);
-
+    void actionFinished();
+    
 public slots:
     void repaint();
     void releaseSkill(RoleSkill*);
+    void AIaction(BattlefieldView* t_view);
 };
 
 #endif  // ROLE_H

@@ -9,6 +9,7 @@
 #include <QGraphicsScene>
 
 class Role;
+class BattlefieldView;
 class Algorithm {
 public:
     Algorithm();
@@ -26,6 +27,10 @@ public:
 
     static void LifeChangeAnimation(Role* t_role, int t_delta);
     static void LifeChangeAnimation(Role* t_role, int from, int to);
+
+    static void basicAI(Role* t_role, BattlefieldView* t_view);
+
+    static void AIcontrol(BattlefieldView* t_view);
 };
 
 #endif  // ALGORITHM_H

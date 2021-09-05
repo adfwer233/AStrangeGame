@@ -31,7 +31,7 @@ void FlightEquipment::animationReact(QPointF t_origin, QPointF t_destination, QG
 
     // remove the flight equipment when finished the animation
     connect(animation, &QPropertyAnimation::finished, [=] { t_scene->removeItem(this); });
-
+    connect(animation, &QPropertyAnimation::finished, [=] { emit this->animationFinished(); });
     animation->start(QPropertyAnimation::DeleteWhenStopped);
 }
 

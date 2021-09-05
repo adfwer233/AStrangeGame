@@ -2,17 +2,19 @@
 #define BATTLEFIELDVIEW_H
 
 #include "graphland.h"
-#include "role.h"
 #include "statusConstant.h"
 #include "roundstatuspanel.h"
 #include "fallingobject.h"
-#include "infantary.h"
 #include "archer.h"
 #include "algorithm.h"
 #include <QGraphicsView>
 #include <QVector>
 #include <QMap>
 #include <QTimer>
+
+class Role;
+class Infantary;
+
 class BattlefieldView : public QGraphicsView {
     Q_OBJECT
 public:
@@ -22,6 +24,8 @@ public:
     virtual void resizeEvent(QResizeEvent* event) override;
 
     QList<GraphUnit*> getPath(GraphUnit* t_start, GraphUnit* t_end);
+
+    friend class Algorithm;
 
 signals:
     void focusChanged(GraphicUnitInfo);

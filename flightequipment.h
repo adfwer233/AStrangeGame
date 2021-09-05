@@ -21,6 +21,8 @@ public:
 
 protected:
     QImage* m_image;
+signals:
+    void animationFinished();
 };
 
 class FlightEquipmentArrow : public FlightEquipment {

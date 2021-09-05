@@ -44,4 +44,10 @@
     <qresource prefix="/new/roles">
         <file>src/waterbuff.png</file>
     </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/normalLand.png</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/Obstacle.png</file>
+    </qresource>
 </RCC>

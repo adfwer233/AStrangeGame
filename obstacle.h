@@ -10,6 +10,8 @@ public:
     virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
     virtual bool isReachable() const override;
     
+    QImage* m_backImage;
+    QImage* m_image;
 };
 
 #endif  // OBSTACLE_H
