@@ -1,9 +1,12 @@
 #include "battlefieldWidget.h"
+#include "gamelevelone.h"
 #include <QLayout>
 #include <QMessageBox>
 
 BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
-    m_battlefieldView     = new BattlefieldView();
+
+    // initialize the game level
+    m_battlefieldView     = new GameLevelOne(parent);
     QGraphicsScene* scene = new QGraphicsScene();
 
     m_battlefieldView->setScene(scene);
@@ -17,8 +20,8 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
     m_roundStatusPanel         = new roundStatusPanel();
 
     messageLayout->addWidget(m_roleStatusPanel);
-    messageLayout->addWidget(m_coordinateLabel);
-    messageLayout->addWidget(m_descriptionLabel);
+    //messageLayout->addWidget(m_coordinateLabel);
+    //messageLayout->addWidget(m_descriptionLabel);
     messageLayout->addWidget(m_cancelSelection);
     messageLayout->addWidget(m_beginRoundButton);
 

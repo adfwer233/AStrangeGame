@@ -129,7 +129,7 @@ void BattlefieldView::addRoleItem(Role* t_role, int t_x, int t_y) {
 void BattlefieldView::drawBattlefield() {
 
     for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 15; j++) {
             GraphLand* newItem;
             if ((i * j) % 5 == 1)
                 newItem = new Obstacle(i, j);
@@ -153,7 +153,7 @@ void BattlefieldView::drawBattlefield() {
 
     // ininialize the related status
     m_mapwidth  = 20;
-    m_mapheight = 10;
+    m_mapheight = 15;
     m_mapStatus.resize(m_mapwidth);
     for (auto& x : m_mapStatus)
         x.resize(m_mapheight);

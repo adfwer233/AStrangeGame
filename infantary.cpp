@@ -2,8 +2,9 @@
 #include "algorithm.h"
 Infantary::Infantary(int t_x, int t_y, int t_team) : Role(t_x, t_y, t_team) {
 
+    m_Description = tr("步兵");
     m_lifeValue = m_fullLifeValue = 100;
-    m_damage = rand() % 3;
+    m_damage = 25 + rand() % 3;
     m_defense = 5;
 
     if (t_team == 0) {

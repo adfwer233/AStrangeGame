@@ -23,6 +23,7 @@ SOURCES += \
     battlefieldview.cpp \
     fallingobject.cpp \
     flightequipment.cpp \
+    gamelevelone.cpp \
     graphland.cpp \
     graphunit.cpp \
     infantary.cpp \
@@ -45,6 +46,7 @@ HEADERS += \
     battlefieldview.h \
     fallingobject.h \
     flightequipment.h \
+    gamelevelone.h \
     graphland.h \
     graphunit.h \
     infantary.h \
