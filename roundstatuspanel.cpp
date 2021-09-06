@@ -37,3 +37,10 @@ void roundStatusPanel::updateRoundStatus(roundStatus t_status) {
     m_actionPointLabel->setText(QString::number(m_status.actionPoint));
 }
 
+void roundStatusPanel::showNextRound() {
+    m_endRoundButton->show();
+}
+
+void roundStatusPanel::hideNextRound() {
+    m_endRoundButton->hide();
+}

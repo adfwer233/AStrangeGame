@@ -37,6 +37,10 @@ signals:
 
     void roundStatudChanged(roundStatus);
 
+    // signals about the AI 
+    void AIstart();
+    void AIend();
+    
 public slots:
     void showReachableLands(Role*);
     void closeReachableLands();
@@ -47,7 +51,7 @@ public slots:
     void nextRound();
 
     void roleReleaseSkill(Role* t_role, RoleSkill* t_skill);
-    
+
 protected:
     void mousePressEvent(QMouseEvent* event) override;
     void addLandItem(GraphLand* t_land, int t_x, int t_y);

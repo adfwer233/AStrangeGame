@@ -297,6 +297,9 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
 }
 
 void Algorithm::AIcontrol(BattlefieldView* t_view) {
+
+    emit t_view->AIstart();
+
     const coordinateStatus ctrlTeam = teamTwo;
 
     QList<Role*> roleList;
@@ -320,6 +323,8 @@ void Algorithm::AIcontrol(BattlefieldView* t_view) {
         for (auto item : roleList) {
             QObject::disconnect(item, &Role::actionFinished, nullptr, nullptr);
         }
+
+        emit t_view->AIend();
     });
 
 

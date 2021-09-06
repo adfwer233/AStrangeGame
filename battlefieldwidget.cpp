@@ -65,6 +65,10 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
     connect(m_roundStatusPanel, &roundStatusPanel::endTheRound, m_battlefieldView, &BattlefieldView::nextRound);
     connect(m_battlefieldView, &BattlefieldView::roundStatudChanged, m_roundStatusPanel, &roundStatusPanel::updateRoundStatus);
 
+    // connect the AI start and end with the next round button show or hide
+    connect(m_battlefieldView, &BattlefieldView::AIstart, m_roundStatusPanel, &roundStatusPanel::hideNextRound);
+    connect(m_battlefieldView, &BattlefieldView::AIend, m_roundStatusPanel, &roundStatusPanel::showNextRound);
+
     m_battlefieldView->drawBattlefield();
 }
 

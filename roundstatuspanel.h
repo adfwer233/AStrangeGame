@@ -22,6 +22,10 @@ public:
 signals:
     void endTheRound();
 
+public slots:
+    void showNextRound();
+    void hideNextRound();
+
 private:
     roundStatus      m_status;
     QLabel*          m_roundNumberLabel;
