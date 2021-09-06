@@ -258,7 +258,7 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
     t_role->updateActionStatus(t_view->m_actionStatus, t_view->m_mapStatus);
 
     // attack is the first place choice
-    if (t_view->m_actionStatus[target->coordinateX()][target->coordinateY()] == attackable) {
+    if (target != nullptr && t_view->m_actionStatus[target->coordinateX()][target->coordinateY()] == attackable) {
         target->setShowingAttackable(true);
         t_role->handleAttack(target, t_view->getPath(t_role, target));
         t_view->m_actionPoint -= Role::ATTACK_ACTION_POINT;
@@ -266,6 +266,10 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
     }
 
     GraphLand* landTarget = nullptr;
+
+    if (target == nullptr) {
+        return;
+    }
 
     auto landDistance = [=](GraphLand* t_land) {
         return abs(t_land->coordinateX() - target->coordinateX()) + abs(t_land->coordinateY() - target->coordinateY());

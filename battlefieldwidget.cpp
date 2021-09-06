@@ -2,6 +2,7 @@
 #include "gamelevelone.h"
 #include <QLayout>
 #include <QMessageBox>
+#include <QSpacerItem>
 
 BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
 
@@ -32,7 +33,10 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
     leftLayout->addWidget(m_roundStatusPanel);
 
     layout->addLayout(leftLayout);
+    layout->addStretch(0);
     layout->addLayout(messageLayout);
+    layout->setStretchFactor(leftLayout, 6);
+    layout->setStretchFactor(messageLayout, 1);
 
     this->setLayout(layout);
 
@@ -46,7 +50,7 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
     // connect the attack and move button in the panel with the battlefieldview
     connect(m_roleStatusPanel, &RoleStatusPanel::attackAction, m_battlefieldView, &BattlefieldView::showAttackableRoles);
     connect(m_roleStatusPanel, &RoleStatusPanel::moveAction, m_battlefieldView, &BattlefieldView::showReachableLands);
-
+    connect(m_roleStatusPanel, &RoleStatusPanel::skillAction, m_battlefieldView, &BattlefieldView::roleReleaseSkill);
     // update other message
     connect(m_battlefieldView, &BattlefieldView::focusChanged, this, &BattlefieldWidget::updateMessage);
 

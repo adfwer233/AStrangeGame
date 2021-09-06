@@ -13,7 +13,6 @@ public:
     virtual void drawBattlefield() override;
 
 private:
-    QList<QPair<int, int>> m_RandomBuffPos;
 };
 
 #endif // GAMELEVELONE_H

@@ -10,7 +10,7 @@ QString RoleBuff::description() {
 }
 
 void redBuff::lifeValueBuff(int& value) const {
-    value += 30;
+    value += 50;
 }
 
 void blueBuff::magicValueBuff(int& value) const {
@@ -18,9 +18,9 @@ void blueBuff::magicValueBuff(int& value) const {
 }
 
 void fireBuff::damageBuff(int& value) const {
-    value += 10;
+    value += 45;
 }
 
 void waterBuff::defenseBuff(int& value) const {
-    value += 5;
+    value += 30;
 }

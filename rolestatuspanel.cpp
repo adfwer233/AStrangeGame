@@ -1,5 +1,5 @@
 #include "rolestatuspanel.h"
-
+#include "battlefieldview.h"
 #include <QDebug>
 #include <QPushButton>
 
@@ -10,10 +10,10 @@ void RoleStatusPanel::initalizer() {
     m_defenseLabel  = new QLabel();
     m_teamLabel     = new QLabel();
     m_roundLabel    = new QLabel();
-    m_attackButton = new QPushButton();
-    m_moveButton   = new QPushButton();
-    m_mainLayout = new QGridLayout();
-    m_actionMenu = nullptr;
+    m_attackButton  = new QPushButton();
+    m_moveButton    = new QPushButton();
+    m_mainLayout    = new QGridLayout();
+    m_actionMenu    = nullptr;
 
     m_mainLayout->addWidget(new QLabel(tr("队伍")), 0, 0, 1, 1);
     m_mainLayout->addWidget(m_teamLabel, 0, 1, 1, 2);
@@ -61,12 +61,10 @@ RoleStatusPanel::RoleStatusPanel(Role* t_role, QWidget* parent) : QWidget(parent
     m_defenseLabel->setText(tr(std::to_string(t_role->defense()).c_str()));
 }
 
-void RoleStatusPanel::updateByRole(Role* const t_role) {
+void RoleStatusPanel::updateByRole(Role* t_role) {
 
     if (m_actionMenu != nullptr) {
         m_actionMenu->hide();
-        m_attackButton->disconnect();
-        m_moveButton->disconnect();
     }
 
     m_lifeValueBar->setMaximum(t_role->fullLifeValue());
@@ -75,7 +73,6 @@ void RoleStatusPanel::updateByRole(Role* const t_role) {
     m_magicValueBar->setValue(std::max(0, t_role->magicValue()));
     m_damageLabel->setText(tr(std::to_string(t_role->damage()).c_str()));
     m_defenseLabel->setText(tr(std::to_string(t_role->defense()).c_str()));
-
 
     if (t_role->teamID() == teamOne) {
         m_teamLabel->setText(tr("队伍一"));
@@ -92,27 +89,19 @@ void RoleStatusPanel::updateByRole(Role* const t_role) {
     }
 
     if (t_role->isroundFinished() == false) {
-        m_actionMenu = new QGroupBox(this);
+        m_actionMenu           = new QGroupBox(this);
         QVBoxLayout* tmpLayout = new QVBoxLayout(m_actionMenu);
 
-        tmpLayout->addWidget(new QLabel(tr("行动菜单")));
-        tmpLayout->addWidget(m_moveButton);
-        tmpLayout->addWidget(m_attackButton);
-        
+        tmpLayout->addWidget(new QLabel(tr("技能栏")));
+
         for (auto item : t_role->skillList()) {
             QPushButton* button = new QPushButton(this);
             button->setText(item->skillName());
             tmpLayout->addWidget(button);
-            connect(button, &QPushButton::clicked, [=]{ t_role->releaseSkill(item); });
+            connect(button, &QPushButton::clicked, [=] { emit skillAction(t_role, item); });
         }
 
         m_actionMenu->setLayout(tmpLayout);
         m_mainLayout->addWidget(m_actionMenu, 6, 0);
-
-        connect(m_moveButton, &QPushButton::clicked, [=] { emit moveAction(t_role); });
-        connect(m_moveButton, &QPushButton::clicked, [=] { this->hide(); });
-        connect(m_attackButton, &QPushButton::clicked, [=] { emit attackAction(t_role); });
-        connect(m_attackButton, &QPushButton::clicked, [=] { this->hide(); });
     }
-
 }

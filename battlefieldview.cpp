@@ -91,10 +91,10 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
             Role* t_role = static_cast<Role*>(graphUnit);
             if (t_role->lifeValue() > 0) {
                 emit roleChosen(t_role);
-                // if (t_role->isroundFinished() == false) {
-                //     showReachableLands(t_role);
-                //     showAttackableRoles(t_role);
-                // }
+                if (t_role->isroundFinished() == false) {
+                    showReachableLands(t_role);
+                    showAttackableRoles(t_role);
+                }
             }
         }
     }
@@ -456,22 +456,35 @@ void BattlefieldView::nextRound() {
     if (m_activeTeam == teamTwo) {
         Algorithm::AIcontrol(this);
     }
+
+    if (m_roundNumber % 6 == 0) {
+        for (auto item : m_RandomBuffPos) {
+            bool flag = 0;
+            for (auto unit : scene()->items()) {
+                auto x = static_cast<GraphUnit*>(unit);
+                if (x->inherits("FallingObject") && x->coordinateX() == item.first && x->coordinateY() == item.second)
+                    flag = 1;
+            }
+            if (flag)
+                continue;
+
+            int x = rand() % 4;
+            FallingObject* buff;
+            if (x == 0)
+                buff = new FallingRedBuff(item.first, item.second);
+            else if (x == 1)
+                buff = new FallingBuleBuff(item.first, item.second);
+            else if (x == 2) 
+                buff = new FallingFireBuff(item.first, item.second);
+            else if (x == 3)
+                buff = new FallingWaterBuff(item.first, item.second);
+            addBuffItem(buff, item.first, item.second);
+        }
+    }
 }
 
 bool BattlefieldView::checkOperability() {
-    int  operableNumber = 0;
-    auto items          = scene()->items();
-    for (auto unit : items) {
-        auto role = dynamic_cast<Role*>(unit);
-        if (role != nullptr) {
-            if (role->lifeValue() >= 0 && role->isroundFinished() == false)
-                operableNumber++;
-        }
-    }
-    if (operableNumber > 0)
-        return true;
-    else
-        return false;
+    return m_actionPoint > 0;
 }
 
 int BattlefieldView::memberCount(coordinateStatus t_team) {
@@ -497,4 +510,19 @@ int BattlefieldView::memberCount(coordinateStatus t_team) {
 
 void BattlefieldView::actionFinished() {
     emit roundStatudChanged(roundStatus{ m_roundNumber, m_activeTeam, m_maxActionPoint, m_actionPoint });
+}
+
+
+void BattlefieldView::roleReleaseSkill(Role* t_role, RoleSkill* t_skill) {
+    if (t_skill->actionPointCost() > this->m_actionPoint) {
+        QMessageBox::information(this, "技能施放", "行动点数不足");
+        return;
+    }
+    else {
+        t_role->releaseSkill(t_skill);
+        m_actionPoint -= t_skill->actionPointCost();
+        actionFinished();
+        if (checkOperability() == false)
+            nextRound();
+    }
 }

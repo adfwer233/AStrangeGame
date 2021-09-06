@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QPainter>
 #include <QParallelAnimationGroup>
+#include <QMessageBox>
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
 Role::Role(int t_x, int t_y, int t_team) : GraphUnit(t_x, t_y) {
@@ -14,7 +15,8 @@ Role::Role(int t_x, int t_y, int t_team) : GraphUnit(t_x, t_y) {
     m_damage        = 20 + rand() % 5;
     m_defense       = 5;
     m_teamID        = t_team == 0 ? teamOne : teamTwo;
-    m_fullmagicValue = m_magicValue = 100;
+    m_fullmagicValue = 100;
+    m_magicValue = 0;
 
     m_isShowingAttackable = 0;
 }
@@ -151,6 +153,12 @@ void Role::AIaction(BattlefieldView* t_view) {
 }
 
 void Role::releaseSkill(RoleSkill* t_skill) {
+
+    if (t_skill->magicPointCost() > m_magicValue) {
+        QMessageBox::information(nullptr, tr("技能施放"), tr("魔法值不足，技能施放失败"));
+        return;
+    }
+
     t_skill->releaseSkill(this, scene());
 }
 

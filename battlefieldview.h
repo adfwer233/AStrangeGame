@@ -45,6 +45,9 @@ public slots:
     void closeAttackableRoles();
 
     void nextRound();
+
+    void roleReleaseSkill(Role* t_role, RoleSkill* t_skill);
+    
 protected:
     void mousePressEvent(QMouseEvent* event) override;
     void addLandItem(GraphLand* t_land, int t_x, int t_y);
@@ -81,6 +84,7 @@ protected:
     int m_maxActionPoint;
     int m_actionPoint;
     
+    QList<QPair<int, int>> m_RandomBuffPos;
 
     QTimer* m_roleFlashTimer;
 };

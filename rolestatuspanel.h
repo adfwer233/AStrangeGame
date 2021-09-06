@@ -18,11 +18,12 @@ public:
 
     void lifeLossAnimation(int);
     void magicLossAnimation(int);
-    void updateByRole(Role* const);
+    void updateByRole(Role*);
 
 signals:
     void moveAction(Role*);
     void attackAction(Role*);
+    void skillAction(Role*, RoleSkill*);
 
 private:
     QProgressBar* m_lifeValueBar;
