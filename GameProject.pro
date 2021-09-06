@@ -24,6 +24,7 @@ SOURCES += \
     fallingobject.cpp \
     flightequipment.cpp \
     gamelevelone.cpp \
+    gameoverwidget.cpp \
     graphland.cpp \
     graphunit.cpp \
     infantary.cpp \
@@ -36,7 +37,9 @@ SOURCES += \
     rolebuff.cpp \
     roleskill.cpp \
     rolestatuspanel.cpp \
-    roundstatuspanel.cpp 
+    roundstatuspanel.cpp \
+    shield.cpp \
+    startscreen.cpp
 
 HEADERS += \
     algorithm.h \
@@ -47,6 +50,7 @@ HEADERS += \
     fallingobject.h \
     flightequipment.h \
     gamelevelone.h \
+    gameoverwidget.h \
     graphland.h \
     graphunit.h \
     infantary.h \
@@ -58,11 +62,15 @@ HEADERS += \
     rolebuff.h \
     roleskill.h \
     rolestatuspanel.h \
+    shield.h \
+    startscreen.h \
     statusConstant.h \
     roundstatuspanel.h
 
 FORMS += \
-    mainwindow.ui
+    gameoverwidget.ui \
+    mainwindow.ui \
+    startscreen.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

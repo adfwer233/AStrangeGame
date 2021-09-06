@@ -27,6 +27,8 @@ public:
 
     friend class Algorithm;
 
+    bool isGameover() const;
+
 signals:
     void focusChanged(GraphicUnitInfo);
 
@@ -91,6 +93,8 @@ protected:
     QList<QPair<int, int>> m_RandomBuffPos;
 
     QTimer* m_roleFlashTimer;
+
+    bool m_isGameover;
 };
 
 #endif  // BATTLEFIELDVIEW_H

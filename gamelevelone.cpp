@@ -2,6 +2,7 @@
 #include "archer.h"
 #include "infantary.h"
 #include "normalland.h"
+#include "shield.h"
 #include "obstacle.h"
 #include "statusConstant.h"
 void GameLevelOne::drawBattlefield() {
@@ -12,15 +13,15 @@ void GameLevelOne::drawBattlefield() {
      * 2 means random buff state
      *
      * 9 means archer of team one
-     * 8 means infantary of team one
-     * 7 means shield of team one
+     * 8 means shield of team one
+     * 7 means infantary of team one
      *
      * 6 means archer of team two
-     * 5 means infantary of team two
-     * 4 means shield of team two
+     * 5 means shield of team two
+     * 4 means infantary of team two
      */
     QVector<QVector<int>> pre = {
-        { 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 4, 0, 0, 4 }, 
+        { 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 4, 0, 0, 4, 0, 0, 6 }, 
         { 0, 0, 1, 0, 0, 0, 0, 1, 0, 2, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0 },
         { 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 }, 
         { 0, 7, 0, 1, 2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 2, 1, 0, 4, 0 },
@@ -34,7 +35,7 @@ void GameLevelOne::drawBattlefield() {
         { 0, 7, 0, 1, 2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 2, 1, 0, 4, 0 },
         { 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 }, 
         { 0, 0, 1, 0, 0, 0, 0, 1, 0, 2, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 4, 0, 0, 4 }
+        { 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 4, 0, 0, 4, 0, 0, 6 }
     };
 
     m_mapwidth  = 20;
@@ -71,7 +72,7 @@ void GameLevelOne::drawBattlefield() {
                 role = new Archer(i, j, 0);
                 break;
             case 8:
-                role = new Infantary(i, j, 0);
+                role = new Shield(i, j, 0);
                 break;
             case 7:
                 role = new Infantary(i, j, 0);
@@ -80,7 +81,7 @@ void GameLevelOne::drawBattlefield() {
                 role = new Archer(i, j, 1);
                 break;
             case 5:
-                role = new Infantary(i, j, 1);
+                role = new Shield(i, j, 1);
                 break;
             case 4:
                 role = new Infantary(i, j, 1);

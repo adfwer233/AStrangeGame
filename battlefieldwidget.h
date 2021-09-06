@@ -17,6 +17,8 @@ public:
 
 public slots:
     void updateMessage(GraphicUnitInfo);
+
+signals:
     void gameover(coordinateStatus);
 
 private:

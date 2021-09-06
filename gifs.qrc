@@ -4,7 +4,13 @@
     </qresource>
     <qresource prefix="/new/roles">
         <file>src/infantary2.gif</file>
-    </qresource>    
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/shield.gif</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/shield2.gif</file>
+    </qresource>       
     <qresource prefix="/new/roles">
         <file>src/arrow.png</file>
     </qresource>
@@ -49,5 +55,8 @@
     </qresource>
     <qresource prefix="/new/roles">
         <file>src/Obstacle.png</file>
+    </qresource>
+    <qresource prefix="/new/roles">
+        <file>src/GameBackground.png</file>
     </qresource>
 </RCC>

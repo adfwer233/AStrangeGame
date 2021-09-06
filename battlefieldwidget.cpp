@@ -77,7 +77,3 @@ void BattlefieldWidget::updateMessage(GraphicUnitInfo t_info) {
     m_coordinateLabel->setText(QObject::tr(temp.c_str()));
     m_descriptionLabel->setText(t_info.Description);
 }
-
-void BattlefieldWidget::gameover(coordinateStatus t_winner) {
-    QMessageBox::information(this, "!!!", "Good Game", QMessageBox::Ok);
-}

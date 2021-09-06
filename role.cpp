@@ -31,12 +31,12 @@ QRectF Role::boundingRect() const {
 
 void Role::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
 
-    if (lifeValue() <= 0) {
-        painter->setBrush(Qt::magenta);
-        painter->drawEllipse(-INIT_SIZE / 2, -INIT_SIZE / 2, INIT_SIZE, INIT_SIZE);
-        painter->drawText(0, 0, tr("die"));
-        return;
-    }
+    // if (lifeValue() <= 0) {
+    //     painter->setBrush(Qt::magenta);
+    //     painter->drawEllipse(-INIT_SIZE / 2, -INIT_SIZE / 2, INIT_SIZE, INIT_SIZE);
+    //     painter->drawText(0, 0, tr("die"));
+    //     return;
+    // }
 
     if (isShowingAttackable()) {
         painter->setBrush(Qt::yellow);
@@ -47,13 +47,10 @@ void Role::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
     if (hasFocus()) {
         painter->setBrush(Qt::blue);
     }
-    else {
-        if (this->teamID() == teamOne)
-            painter->setBrush(Qt::white);
-        else
-            painter->setBrush(Qt::lightGray);
-    }
 
+    if (this->m_roundFinished == false) {
+        painter->setBrush(QColor(255, 215, 0));
+    }
     painter->drawEllipse(-INIT_SIZE / 2, -INIT_SIZE / 2, INIT_SIZE, INIT_SIZE);
 }
 
@@ -152,14 +149,15 @@ void Role::AIaction(BattlefieldView* t_view) {
     Algorithm::basicAI(this, t_view);
 }
 
-void Role::releaseSkill(RoleSkill* t_skill) {
+bool Role::releaseSkill(RoleSkill* t_skill) {
 
     if (t_skill->magicPointCost() > m_magicValue) {
         QMessageBox::information(nullptr, tr("技能施放"), tr("魔法值不足，技能施放失败"));
-        return;
+        return false;
     }
 
     t_skill->releaseSkill(this, scene());
+    return true;
 }
 
 void Role::setShowingAttackable(bool t_value) {

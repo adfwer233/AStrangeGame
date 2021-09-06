@@ -46,6 +46,11 @@ void Archer::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
         painter->drawEllipse(-INIT_SIZE / 2, -INIT_SIZE / 2, INIT_SIZE, INIT_SIZE);
     }
 
+    if (this->m_roundFinished == false) {
+        painter->setBrush(QColor(255, 215, 0, 100));
+        painter->drawEllipse(-INIT_SIZE / 2, -INIT_SIZE / 2, INIT_SIZE, INIT_SIZE);
+    }
+
     if (m_movie != nullptr && m_movie->state() == QMovie::Running) {
         painter->drawImage(boundingRect(), m_movie->currentImage());
     }

@@ -233,6 +233,9 @@ void Algorithm::LifeChangeAnimation(Role* t_role, int from, int to) {
  */
 void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
 
+    if (t_view->isGameover())
+        return;
+
     QList<Role*> enemyList;
     for (auto item : t_view->scene()->items()) {
         auto role = dynamic_cast<Role*>(item);
@@ -303,12 +306,19 @@ void Algorithm::AIcontrol(BattlefieldView* t_view) {
     const coordinateStatus ctrlTeam = teamTwo;
 
     QList<Role*> roleList;
+
+    if (t_view->isGameover())
+        return;
+
     for (auto item : t_view->scene()->items()) {
         auto role = dynamic_cast<Role*>(item);
         if (role != nullptr && role->teamID() == ctrlTeam) {
             roleList.push_back(role);
         }
     }
+
+    if (roleList.size() == 0)
+        return;
 
     for (int i = 0; i < roleList.size() - 1; i++) {
         QObject::connect(roleList[i], &Role::actionFinished, [=] { roleList[i + 1]->AIaction(t_view); });

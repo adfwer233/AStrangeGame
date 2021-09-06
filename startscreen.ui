@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StartScreen</class>
+ <widget class="QWidget" name="StartScreen">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1024</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QPushButton" name="StartButton">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>400</y>
+     <width>261</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>开始游戏</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>180</y>
+     <width>561</width>
+     <height>161</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>华光淡古印_CNKI</family>
+     <pointsize>54</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>这里是名字</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="TextButton">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>530</y>
+     <width>261</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>进入教程</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

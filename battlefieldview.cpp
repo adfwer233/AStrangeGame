@@ -16,6 +16,7 @@
 BattlefieldView::BattlefieldView(QWidget* parent) : QGraphicsView(parent) {
     m_roundNumber    = 0;
     m_observingRole  = nullptr;
+    m_isGameover     = false;
     m_roleFlashTimer = new QTimer(this);
 }
 
@@ -55,7 +56,7 @@ void BattlefieldView::mousePressEvent(QMouseEvent* event) {
 
             bool tmp = m_actionPoint >= Role::MOVE_ACTION_POINT;
             if (tmp && handleMoving(m_observingRole, fallingBuff)) {
-                m_observingRole->addBuff(fallingBuff->getBuff());
+                // m_observingRole->addBuff(fallingBuff->getBuff());
                 m_actionPoint -= Role::MOVE_ACTION_POINT;
                 actionFinished();
                 m_observingRole->setroundFinished(true);
@@ -124,7 +125,7 @@ void BattlefieldView::addRoleItem(Role* t_role, int t_x, int t_y) {
 
     connect(t_role, &Role::roleStatueChanged, this, [=] { emit roleChosen(t_role); });
     connect(t_role, &Role::roleStatueChanged, this, &BattlefieldView::updateBattlefield);
-    connect(t_role, &Role::deathProcess, [=]{ Algorithm::removeDeath(t_role); });
+    connect(t_role, &Role::deathProcess, [=] { Algorithm::removeDeath(t_role); });
 }
 
 void BattlefieldView::drawBattlefield() {
@@ -293,6 +294,9 @@ void BattlefieldView::updateBattlefield() {
         emit gameover(teamTwo);
     else if (teamtwoNum == 0)
         emit gameover(teamOne);
+
+    if (teamoneNum == 0 || teamtwoNum == 0)
+        m_isGameover = true;
 }
 
 /**
@@ -318,8 +322,11 @@ bool BattlefieldView::handleMoving(Role* t_role, GraphLand* t_land) {
         QObject::connect(animationGroup, &QSequentialAnimationGroup::finished, t_role, &Role::actionFinished);
         animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
-        if (t_land->inherits("FallingObject"))
+        if (t_land->inherits("FallingObject")) {
+            auto buff = static_cast<FallingObject*>(t_land);
+            t_role->addBuff(buff->getBuff());
             scene()->removeItem(t_land);
+        }
 
         t_role->setroundFinished(true);
         t_role->setPos(this->pos());
@@ -443,12 +450,28 @@ void BattlefieldView::nextRound() {
         initalizeRound(teamOne);
     }
 
-    auto items = scene()->items();
+    auto         items = scene()->items();
+    QList<Role*> roleList;
     for (auto unit : items) {
         auto role = dynamic_cast<Role*>(unit);
-        if (role != nullptr) {
-            if (role->lifeValue() >= 0) {
-                role->settleBuff();
+        if (role != nullptr)
+            roleList.push_back(role);
+    }
+
+    for (auto role : roleList) {
+        if (role->lifeValue() >= 0)
+            role->settleBuff();
+    }
+
+    for (auto item : items) {
+        auto unit = static_cast<GraphUnit*>(item);
+        if (unit->inherits("FallingObject")) {
+            auto buff = static_cast<FallingObject*>(unit);
+            for (auto role : roleList) {
+                if (role->coordinateX() == buff->coordinateX() && role->coordinateY() == buff->coordinateY()) {
+                    role->addBuff(buff->getBuff());
+                    scene()->removeItem(buff);
+                }
             }
         }
     }
@@ -468,13 +491,13 @@ void BattlefieldView::nextRound() {
             if (flag)
                 continue;
 
-            int x = rand() % 4;
+            int            x = rand() % 4;
             FallingObject* buff;
             if (x == 0)
                 buff = new FallingRedBuff(item.first, item.second);
             else if (x == 1)
                 buff = new FallingBuleBuff(item.first, item.second);
-            else if (x == 2) 
+            else if (x == 2)
                 buff = new FallingFireBuff(item.first, item.second);
             else if (x == 3)
                 buff = new FallingWaterBuff(item.first, item.second);
@@ -512,17 +535,21 @@ void BattlefieldView::actionFinished() {
     emit roundStatudChanged(roundStatus{ m_roundNumber, m_activeTeam, m_maxActionPoint, m_actionPoint });
 }
 
-
 void BattlefieldView::roleReleaseSkill(Role* t_role, RoleSkill* t_skill) {
     if (t_skill->actionPointCost() > this->m_actionPoint) {
         QMessageBox::information(this, "技能施放", "行动点数不足");
         return;
     }
     else {
-        t_role->releaseSkill(t_skill);
-        m_actionPoint -= t_skill->actionPointCost();
+        if (t_role->releaseSkill(t_skill)) {
+            m_actionPoint -= t_skill->actionPointCost();
+        }
         actionFinished();
         if (checkOperability() == false)
             nextRound();
     }
+}
+
+bool BattlefieldView::isGameover() const {
+    return m_isGameover;
 }
