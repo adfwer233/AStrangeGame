@@ -1,6 +1,7 @@
 #ifndef LEVELSELECTION_H
 #define LEVELSELECTION_H
 
+#include "statusConstant.h"
 #include <QWidget>
 
 namespace Ui {
@@ -16,7 +17,7 @@ public:
     ~LevelSelection();
 
 signals:
-    void levelSelected(int);
+    void levelSelected(int, levelOfAI);
 
 private:
     Ui::LevelSelection *ui;

@@ -4,7 +4,7 @@
 
 #include <QGraphicsScene>
 #include "battlefieldview.h"
-
+#include "statusConstant.h"
 #include "battlefieldwidget.h"
 #include "startscreen.h"
 #include "levelselection.h"
@@ -28,9 +28,9 @@ int main(int argc, char* argv[]) {
         levelSelection->show();
     });
 
-    QObject::connect(levelSelection, &LevelSelection::levelSelected, [&](int x) {
+    QObject::connect(levelSelection, &LevelSelection::levelSelected, [&](int x, levelOfAI t_level) {
         levelSelection->hide();
-        widget = new BattlefieldWidget(nullptr, x);
+        widget = new BattlefieldWidget(nullptr, x, t_level);
         QObject::connect(widget, &BattlefieldWidget::gameover, gameover, &GameoverWidget::setWinner);
         QObject::connect(widget, &BattlefieldWidget::gameover, [&]{
             gameover->show();

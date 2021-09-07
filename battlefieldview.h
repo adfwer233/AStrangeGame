@@ -28,6 +28,9 @@ public:
     friend class Algorithm;
 
     bool isGameover() const;
+    
+    levelOfAI AIlevel() const;
+    void setAIlevel(levelOfAI);
 
 signals:
     void focusChanged(GraphicUnitInfo);
@@ -95,6 +98,9 @@ protected:
     QTimer* m_roleFlashTimer;
 
     bool m_isGameover;
+
+    // AI level system
+    levelOfAI m_AILevel;
 };
 
 #endif  // BATTLEFIELDVIEW_H

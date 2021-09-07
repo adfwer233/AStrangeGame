@@ -479,7 +479,7 @@ void BattlefieldView::nextRound() {
     }
 
     if (m_activeTeam == teamTwo) {
-        Algorithm::AIcontrol(this);
+        Algorithm::AIcontrol(this, AIlevel());
     }
 
     if (m_roundNumber % 6 == 0) {
@@ -554,4 +554,12 @@ void BattlefieldView::roleReleaseSkill(Role* t_role, RoleSkill* t_skill) {
 
 bool BattlefieldView::isGameover() const {
     return m_isGameover;
+}
+
+levelOfAI BattlefieldView::AIlevel() const {
+    return m_AILevel;
+}
+
+void BattlefieldView::setAIlevel(levelOfAI t_value) {
+    m_AILevel = t_value;
 }

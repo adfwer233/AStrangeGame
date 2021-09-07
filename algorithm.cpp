@@ -2,6 +2,7 @@
 #include "battlefieldview.h"
 #include "lifebar.h"
 #include "role.h"
+#include "normalland.h"
 #include <QDebug>
 #include <QObject>
 #include <QPropertyAnimation>
@@ -260,6 +261,36 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
     t_view->updateMapStatus();
     t_role->updateActionStatus(t_view->m_actionStatus, t_view->m_mapStatus);
 
+    /**
+     * @brief a part only advanced AI have
+     * pick the falling buff firstly
+     */
+    if (t_view->AIlevel() == advanced) {
+        QList<FallingObject*> buffList;
+        for (auto item : t_view->scene()->items()) {
+            auto unit = dynamic_cast<GraphUnit*>(item);
+            if (unit != nullptr && unit->inherits("FallingObject")) {
+                buffList.push_back(static_cast<FallingObject*>(unit));
+            }
+        }
+
+        for (auto buff : buffList) {
+            if (t_view->m_actionStatus[buff->coordinateX()][buff->coordinateY()] == moveable){
+                for (auto item : t_view->scene()->items()) {
+                    auto unit = dynamic_cast<GraphUnit*>(item);
+                    if (unit != nullptr && unit->inherits("normalLand"))
+                        if (unit->coordinateX() == buff->coordinateX() && unit->coordinateY() == buff->coordinateY()) {
+                            auto land = static_cast<normalLand*>(unit);
+                            land->setShowingRechability(true);
+                            t_view->handleMoving(t_role, land);
+                            return;
+                        }
+                }
+            }
+        }
+    }
+
+
     // attack is the first place choice
     if (target != nullptr && t_view->m_actionStatus[target->coordinateX()][target->coordinateY()] == attackable) {
         target->setShowingAttackable(true);
@@ -299,7 +330,7 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
     emit t_role->actionFinished();
 }
 
-void Algorithm::AIcontrol(BattlefieldView* t_view) {
+void Algorithm::AIcontrol(BattlefieldView* t_view, levelOfAI t_level) {
 
     emit t_view->AIstart();
 
@@ -313,7 +344,15 @@ void Algorithm::AIcontrol(BattlefieldView* t_view) {
     for (auto item : t_view->scene()->items()) {
         auto role = dynamic_cast<Role*>(item);
         if (role != nullptr && role->teamID() == ctrlTeam) {
-            roleList.push_back(role);
+
+            /**
+             * @brief reverse the list when advanced AI controling
+             * more roles can be moved in larger area
+             */
+            if (t_level == basic)
+                roleList.push_back(role);
+            else
+                roleList.push_front(role);
         }
     }
 

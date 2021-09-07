@@ -30,7 +30,7 @@ public:
 
     static void basicAI(Role* t_role, BattlefieldView* t_view);
 
-    static void AIcontrol(BattlefieldView* t_view);
+    static void AIcontrol(BattlefieldView* t_view, levelOfAI t_level = basic);
 
     static void removeDeath(Role*);
 };

@@ -12,8 +12,10 @@ LevelSelection::LevelSelection(QWidget *parent) :
     this->setPalette(pale);
     this->setAutoFillBackground(true);
 
-    connect(ui->levelOneButton, &QPushButton::clicked, [=]{ emit levelSelected(1); });
-    connect(ui->levelTwoButton, &QPushButton::clicked, [=]{ emit levelSelected(2); });
+    connect(ui->levelOneButton, &QPushButton::clicked, [=]{ emit levelSelected(1, basic); });
+    connect(ui->levelOneButton_ad, &QPushButton::clicked, [=]{ emit levelSelected(1, advanced); });
+    connect(ui->levelTwoButton, &QPushButton::clicked, [=]{ emit levelSelected(2, basic); });
+    connect(ui->levelTwoButton_ad, &QPushButton::clicked, [=]{ emit levelSelected(2, advanced); });
 }
 
 LevelSelection::~LevelSelection()

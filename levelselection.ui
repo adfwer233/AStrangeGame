@@ -13,32 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="levelOneButton">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>360</y>
-     <width>261</width>
-     <height>81</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>第一关</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="levelTwoButton">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>500</y>
-     <width>261</width>
-     <height>81</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>第二关</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -57,6 +31,46 @@
    <property name="text">
     <string>请选择关卡</string>
    </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>320</y>
+     <width>301</width>
+     <height>311</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="levelOneButton">
+      <property name="text">
+       <string>第一关（简单）</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="levelOneButton_ad">
+      <property name="text">
+       <string>第一关（中等）</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="levelTwoButton">
+      <property name="text">
+       <string>第二关（简单）</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="levelTwoButton_ad">
+      <property name="text">
+       <string>第二关（中等）</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

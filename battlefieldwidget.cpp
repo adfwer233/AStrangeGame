@@ -6,7 +6,7 @@
 #include <QSpacerItem>
 #include <QMediaPlaylist>
 
-BattlefieldWidget::BattlefieldWidget(QWidget* parent, int levelNumber) : QWidget(parent) {
+BattlefieldWidget::BattlefieldWidget(QWidget* parent, int levelNumber, levelOfAI t_AIlevel) : QWidget(parent) {
 
     // initialize the game level
     if (levelNumber == 1)
@@ -16,6 +16,8 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent, int levelNumber) : QWidget
     else {
         throw "no this level";
     }
+
+    m_battlefieldView->setAIlevel(t_AIlevel);
 
     QGraphicsScene* scene = new QGraphicsScene();
 
