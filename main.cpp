@@ -7,6 +7,7 @@
 
 #include "battlefieldwidget.h"
 #include "startscreen.h"
+#include "levelselection.h"
 #include "gameoverwidget.h"
 #include <QLabel>
 #include <QLayout>
@@ -19,18 +20,23 @@ int main(int argc, char* argv[]) {
 
     auto start = new StartScreen(nullptr);
     auto gameover = new GameoverWidget(nullptr);
+    auto levelSelection = new LevelSelection(nullptr);
     start->show();
     
-    QObject::connect(start, &StartScreen::startButtonClicked, [&]{ 
-        widget = new BattlefieldWidget; 
+    QObject::connect(start, &StartScreen::startButtonClicked, [&]{
+        start->hide();
+        levelSelection->show();
+    });
+
+    QObject::connect(levelSelection, &LevelSelection::levelSelected, [&](int x) {
+        levelSelection->hide();
+        widget = new BattlefieldWidget(nullptr, x);
         QObject::connect(widget, &BattlefieldWidget::gameover, gameover, &GameoverWidget::setWinner);
-        QObject::connect(widget, &BattlefieldWidget::gameover, [&]{ 
+        QObject::connect(widget, &BattlefieldWidget::gameover, [&]{
             gameover->show();
             widget->hide();
-            qDebug() << "gameover running";
         });
         widget->show();
-        start->hide();
     });
 
     QObject::connect(gameover, &GameoverWidget::goBack, [&]{

@@ -13,7 +13,7 @@ class BattlefieldWidget : public QWidget {
     Q_OBJECT;
 
 public:
-    BattlefieldWidget(QWidget* parent = 0);
+    BattlefieldWidget(QWidget* parent = 0, int levelNumber = 1);
 
 public slots:
     void updateMessage(GraphicUnitInfo);

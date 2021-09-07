@@ -29,6 +29,7 @@ SOURCES += \
     graphland.cpp \
     graphunit.cpp \
     infantary.cpp \
+    levelselection.cpp \
     lifebar.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -56,6 +57,7 @@ HEADERS += \
     graphland.h \
     graphunit.h \
     infantary.h \
+    levelselection.h \
     lifebar.h \
     mainwindow.h \
     normalland.h \
@@ -71,6 +73,7 @@ HEADERS += \
 
 FORMS += \
     gameoverwidget.ui \
+    levelselection.ui \
     mainwindow.ui \
     startscreen.ui
 

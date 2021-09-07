@@ -5,10 +5,17 @@
 #include <QMessageBox>
 #include <QSpacerItem>
 
-BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
+BattlefieldWidget::BattlefieldWidget(QWidget* parent, int levelNumber) : QWidget(parent) {
 
     // initialize the game level
-    m_battlefieldView     = new GameLevelTwo(parent);
+    if (levelNumber == 1)
+        m_battlefieldView     = new GameLevelOne(parent);
+    else if (levelNumber == 2)
+        m_battlefieldView = new GameLevelTwo(parent);
+    else {
+        throw "no this level";
+    }
+
     QGraphicsScene* scene = new QGraphicsScene();
 
     m_battlefieldView->setScene(scene);
