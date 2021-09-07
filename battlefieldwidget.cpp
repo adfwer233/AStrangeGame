@@ -23,7 +23,7 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent, int levelNumber) : QWidget
     QVBoxLayout* messageLayout = new QVBoxLayout();
     m_coordinateLabel          = new QLabel(QObject::tr("这里将会显示坐标"));
     m_descriptionLabel         = new QLabel(QObject::tr("Description"));
-    m_beginRoundButton         = new QPushButton(tr("开始回合"));
+    m_beginRoundButton         = new QPushButton(tr("退出游戏"));
     m_cancelSelection          = new QPushButton(tr("取消选择"));
     m_roleStatusPanel          = new RoleStatusPanel();
     m_roundStatusPanel         = new roundStatusPanel();
@@ -77,6 +77,7 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent, int levelNumber) : QWidget
     connect(m_battlefieldView, &BattlefieldView::AIstart, m_roundStatusPanel, &roundStatusPanel::hideNextRound);
     connect(m_battlefieldView, &BattlefieldView::AIend, m_roundStatusPanel, &roundStatusPanel::showNextRound);
 
+    connect(m_beginRoundButton, &QPushButton::clicked, this, &BattlefieldWidget::exitgame);
     m_battlefieldView->drawBattlefield();
 }
 

@@ -20,7 +20,7 @@ public slots:
 
 signals:
     void gameover(coordinateStatus);
-
+    void exitgame();
 private:
     RoleStatusPanel*  m_roleStatusPanel;
     roundStatusPanel* m_roundStatusPanel;

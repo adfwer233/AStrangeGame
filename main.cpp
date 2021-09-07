@@ -36,6 +36,11 @@ int main(int argc, char* argv[]) {
             gameover->show();
             widget->hide();
         });
+        QObject::connect(widget, &BattlefieldWidget::exitgame, [&]{
+            widget->hide();
+            widget->deleteLater();
+            start->show();
+        });
         widget->show();
     });
 
