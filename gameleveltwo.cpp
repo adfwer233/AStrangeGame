@@ -103,4 +103,6 @@ void GameLevelTwo::drawBattlefield() {
     connect(m_roleFlashTimer, &QTimer::timeout, this, [&] { this->scene()->update(scene()->itemsBoundingRect()); });
     m_roleFlashTimer->start(100);
     initalizeRound(teamOne);
+
+    updateShadow();
 }

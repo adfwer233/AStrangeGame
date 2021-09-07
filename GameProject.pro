@@ -41,6 +41,7 @@ SOURCES += \
     roleskill.cpp \
     rolestatuspanel.cpp \
     roundstatuspanel.cpp \
+    shadow.cpp \
     shield.cpp \
     startscreen.cpp
 
@@ -68,6 +69,7 @@ HEADERS += \
     rolebuff.h \
     roleskill.h \
     rolestatuspanel.h \
+    shadow.h \
     shield.h \
     startscreen.h \
     statusConstant.h \

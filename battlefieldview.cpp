@@ -4,7 +4,7 @@
 #include "graphunit.h"
 #include "normalland.h"
 #include "obstacle.h"
-
+#include "shadow.h"
 #include <QDebug>
 #include <QList>
 #include <QMessageBox>
@@ -333,6 +333,7 @@ bool BattlefieldView::handleMoving(Role* t_role, GraphLand* t_land) {
         t_role->setCoordinate(t_land->coordinateX(), t_land->coordinateY());
         t_role = nullptr;
 
+        updateShadow();
         this->scene()->update(scene()->itemsBoundingRect());
         return true;
     }
@@ -562,4 +563,56 @@ levelOfAI BattlefieldView::AIlevel() const {
 
 void BattlefieldView::setAIlevel(levelOfAI t_value) {
     m_AILevel = t_value;
+}
+
+void BattlefieldView::updateShadow() {
+    QList<Role*> roleList;
+
+    // delete the old shadow
+    for (auto item : this->scene()->items()) {
+        auto unit = dynamic_cast<ShadowLand*>(item);
+        if (unit != nullptr) {
+            qDebug() << "remove shadow";
+            this->scene()->removeItem(unit);
+            unit->hide();
+            unit->deleteLater();
+        }
+    }
+
+
+    for (auto item : this->scene()->items()) {
+        auto unit = dynamic_cast<GraphUnit*>(item);
+        if (unit != nullptr && unit->inherits("Role")) {
+            auto role = static_cast<Role*>(unit);
+            if (role->teamID() == teamOne) {
+                roleList.push_back(role);
+            }
+        }
+    }
+
+    QVector<QVector<bool>> vis;
+    QVector<QVector<QPointF>> m_pos;
+    vis.resize(m_mapwidth);
+    for (auto& x : vis) {
+        x.resize(m_mapheight);
+        std::fill(x.begin(), x.end(), 0);
+    }
+    
+    for (auto role : roleList) {
+        for (int i = 0; i < m_mapwidth; i++)
+            for (int j = 0; j < m_mapheight; j++) {
+                if (abs(i - role->coordinateX()) + abs(j - role->coordinateY()) <= 8)
+                    vis[i][j] = 1;
+            }
+    }
+
+    for (int i = 0; i < m_mapwidth; i++) {
+        for (int j = 0; j < m_mapheight; j++) {
+            if (vis[i][j] == 0) {
+                ShadowLand* shadow = new ShadowLand(i, j);
+                addLandItem(shadow, i, j);
+                shadow->setZValue(2);
+            }
+        }
+    }
 }

@@ -101,6 +101,8 @@ protected:
 
     // AI level system
     levelOfAI m_AILevel;
+
+    void updateShadow();
 };
 
 #endif  // BATTLEFIELDVIEW_H
