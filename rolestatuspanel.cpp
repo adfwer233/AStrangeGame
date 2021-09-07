@@ -88,7 +88,7 @@ void RoleStatusPanel::updateByRole(Role* t_role) {
         m_roundLabel->setText(tr("不可移动"));
     }
 
-    if (t_role->isroundFinished() == false) {
+    if (true) {
         m_actionMenu           = new QGroupBox(this);
         QVBoxLayout* tmpLayout = new QVBoxLayout(m_actionMenu);
 

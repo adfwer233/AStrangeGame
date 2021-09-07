@@ -157,6 +157,7 @@ bool Role::releaseSkill(RoleSkill* t_skill) {
         return false;
     }
 
+    m_magicValue -= t_skill->magicPointCost();
     t_skill->releaseSkill(this, scene());
     return true;
 }
