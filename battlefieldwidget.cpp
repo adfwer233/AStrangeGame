@@ -4,12 +4,13 @@
 #include <QLayout>
 #include <QMessageBox>
 #include <QSpacerItem>
+#include <QMediaPlaylist>
 
 BattlefieldWidget::BattlefieldWidget(QWidget* parent, int levelNumber) : QWidget(parent) {
 
     // initialize the game level
     if (levelNumber == 1)
-        m_battlefieldView     = new GameLevelOne(parent);
+        m_battlefieldView = new GameLevelOne(parent);
     else if (levelNumber == 2)
         m_battlefieldView = new GameLevelTwo(parent);
     else {
@@ -27,12 +28,19 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent, int levelNumber) : QWidget
     m_cancelSelection          = new QPushButton(tr("取消选择"));
     m_roleStatusPanel          = new RoleStatusPanel();
     m_roundStatusPanel         = new roundStatusPanel();
+    m_musicPanel               = new MusicPanel();
 
     messageLayout->addWidget(m_roleStatusPanel);
-    //messageLayout->addWidget(m_coordinateLabel);
-    //messageLayout->addWidget(m_descriptionLabel);
+    // messageLayout->addWidget(m_coordinateLabel);
+    // messageLayout->addWidget(m_descriptionLabel);
+    messageLayout->addWidget(m_musicPanel);
     messageLayout->addWidget(m_cancelSelection);
     messageLayout->addWidget(m_beginRoundButton);
+
+    messageLayout->setStretchFactor(m_cancelSelection, 1);
+    messageLayout->setStretchFactor(m_beginRoundButton, 1);
+    messageLayout->setStretchFactor(m_musicPanel, 3);
+    messageLayout->setStretchFactor(m_roleStatusPanel, 7);
 
     QHBoxLayout* layout = new QHBoxLayout();
 
@@ -79,6 +87,22 @@ BattlefieldWidget::BattlefieldWidget(QWidget* parent, int levelNumber) : QWidget
 
     connect(m_beginRoundButton, &QPushButton::clicked, this, &BattlefieldWidget::exitgame);
     m_battlefieldView->drawBattlefield();
+
+    // the background music
+
+    auto playlist = new QMediaPlaylist();
+    playlist->addMedia(QUrl("qrc:/new/bgm/src/BGM.wav"));
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+
+    musicPlayer = new QMediaPlayer(this);
+    musicPlayer->setPlaylist(playlist);
+    musicPlayer->setVolume(30);
+    musicPlayer->play();
+
+    // connect the music panel with the music player
+    connect(m_musicPanel, &MusicPanel::musicPlay, [=] { musicPlayer->play(); });
+    connect(m_musicPanel, &MusicPanel::musicPause, [=] { musicPlayer->pause(); });
+    connect(m_musicPanel, &MusicPanel::changeVolume, [=](int x) { musicPlayer->setVolume(x); });
 }
 
 void BattlefieldWidget::updateMessage(GraphicUnitInfo t_info) {
