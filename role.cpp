@@ -16,7 +16,7 @@ Role::Role(int t_x, int t_y, int t_team) : GraphUnit(t_x, t_y) {
     m_defense       = 5;
     m_teamID        = t_team == 0 ? teamOne : teamTwo;
     m_fullmagicValue = 100;
-    m_magicValue = 0;
+    m_magicValue = 20;
 
     m_isShowingAttackable = 0;
 }
@@ -56,7 +56,8 @@ void Role::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
 
 void Role::settleLifeLoss(int t_damage) {
 
-    int loss = t_damage - this->defense();
+    int loss = t_damage * (500)/ (500 + this->defense());
+
     if (loss < 0)
         return;
     else {
@@ -223,4 +224,8 @@ void Role::addSkill(RoleSkill* t_skill) {
 
 QList<RoleSkill*> Role::skillList() const {
     return m_skills;
+}
+
+void Role::selfHeat() {
+    m_magicValue = std::min(m_fullmagicValue, m_magicValue += 2);
 }

@@ -35,14 +35,14 @@ void ArrowRain::releaseSkill(Role* t_sender, QGraphicsScene* t_scene) {
 
     for (int i = 0; i < map.size(); i++) {
         for (int j = 0; j < map[i].size(); j++) {
-            if (std::max(abs(i - posx), abs(j - posy)) <= 1) {
-                FlightEquipmentArrow* arrow = new FlightEquipmentArrow();
-                arrow->animationReact(t_sender->pos(), map[i][j]->pos(), t_scene);
+            if (std::max(abs(i - posx), abs(j - posy)) <= 3) {
 
                 if(map[i][j]->inherits("Role")) {
                     auto role = static_cast<Role*>(map[i][j]);
                     if (role->teamID() != t_sender->teamID()) {
                         role->settleLifeLoss(t_sender->damage());
+                        FlightEquipmentArrow* arrow = new FlightEquipmentArrow();
+                        arrow->animationReact(t_sender->pos(), map[i][j]->pos(), t_scene);
                     }
                 }
             }
@@ -82,7 +82,7 @@ void SwordDance::releaseSkill(Role* t_sender, QGraphicsScene* t_scene) {
                 if(map[i][j]->inherits("Role")) {
                     auto role = static_cast<Role*>(map[i][j]);
                     if (role->teamID() != t_sender->teamID()) {
-                        role->settleLifeLoss(t_sender->damage() + 5);
+                        role->settleLifeLoss(t_sender->damage() + 15);
                         qDebug() << "sword dance running";
                     }
                 }

@@ -5,6 +5,7 @@
 
 class GameLevelOne : public BattlefieldView
 {
+    Q_OBJECT
 public:
     explicit GameLevelOne(QWidget* parent = nullptr) : BattlefieldView(parent) {
 

@@ -15,7 +15,10 @@ void FallingObject::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QW
     else {
         painter->setBrush(Qt::red);
     }
-    
-    if (m_image != nullptr)
+
+    if (m_image != nullptr) {
+        qreal penWidth = 1;
+        QRectF rect = QRectF(-INIT_SIZE / 4 - penWidth / 2, -INIT_SIZE / 4 - penWidth / 2, INIT_SIZE / 2 + penWidth, INIT_SIZE / 2+ penWidth);
         painter->drawImage(this->boundingRect(), *m_image);
+    }
 }

@@ -24,6 +24,7 @@ SOURCES += \
     fallingobject.cpp \
     flightequipment.cpp \
     gamelevelone.cpp \
+    gameleveltwo.cpp \
     gameoverwidget.cpp \
     graphland.cpp \
     graphunit.cpp \
@@ -50,6 +51,7 @@ HEADERS += \
     fallingobject.h \
     flightequipment.h \
     gamelevelone.h \
+    gameleveltwo.h \
     gameoverwidget.h \
     graphland.h \
     graphunit.h \

@@ -52,6 +52,7 @@ public:
     virtual void updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, const QVector<QVector<coordinateStatus>>& t_coordinate);
     virtual bool handleAttack(Role* t_target, QList<GraphUnit*> t_list); 
 
+    void selfHeat();
 protected:
     // basic properties for roles
     int              m_lifeValue;
@@ -72,6 +73,7 @@ protected:
 
     //skill system
     QList<RoleSkill*> m_skills;
+
 
 signals:
     void roleStatueChanged(Role*);

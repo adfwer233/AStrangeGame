@@ -1,5 +1,6 @@
 #include "battlefieldWidget.h"
 #include "gamelevelone.h"
+#include "gameleveltwo.h"
 #include <QLayout>
 #include <QMessageBox>
 #include <QSpacerItem>
@@ -7,7 +8,7 @@
 BattlefieldWidget::BattlefieldWidget(QWidget* parent) : QWidget(parent) {
 
     // initialize the game level
-    m_battlefieldView     = new GameLevelOne(parent);
+    m_battlefieldView     = new GameLevelTwo(parent);
     QGraphicsScene* scene = new QGraphicsScene();
 
     m_battlefieldView->setScene(scene);

@@ -14,6 +14,8 @@ Shield::Shield(int t_x, int t_y, int t_team) : Role(t_x, t_y, t_team) {
         m_movie = new QMovie(":/new/roles/src/shield2.gif");
     }
     m_movie->start();
+
+    m_skills.push_back(new Explosion(this));
 }
 
 void Shield::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {

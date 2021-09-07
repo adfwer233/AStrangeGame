@@ -436,7 +436,7 @@ void BattlefieldView::initalizeRound(coordinateStatus t_team) {
         }
     }
 
-    m_maxActionPoint = memberCount(t_team);
+    m_maxActionPoint = memberCount(t_team) + 5;
     m_actionPoint    = m_maxActionPoint;
 
     emit roundStatudChanged(roundStatus{ m_roundNumber, m_activeTeam, m_maxActionPoint, m_actionPoint });
@@ -459,8 +459,10 @@ void BattlefieldView::nextRound() {
     }
 
     for (auto role : roleList) {
-        if (role->lifeValue() >= 0)
+        if (role->lifeValue() >= 0) {
+            role->selfHeat();
             role->settleBuff();
+        }
     }
 
     for (auto item : items) {

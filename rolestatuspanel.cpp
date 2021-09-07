@@ -31,11 +31,11 @@ void RoleStatusPanel::initalizer() {
 
     m_lifeValueBar->setMaximum(100);
     m_lifeValueBar->setMinimum(0);
-    m_lifeValueBar->setValue(50);
+    m_lifeValueBar->setValue(0);
 
     m_magicValueBar->setMaximum(100);
     m_magicValueBar->setMinimum(0);
-    m_magicValueBar->setValue(50);
+    m_magicValueBar->setValue(0);
 
     m_damageLabel->setText(tr("10"));
     m_defenseLabel->setText(tr("5"));
