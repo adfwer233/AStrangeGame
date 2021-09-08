@@ -92,16 +92,31 @@ void RoleStatusPanel::updateByRole(Role* t_role) {
         m_actionMenu           = new QGroupBox(this);
         QVBoxLayout* tmpLayout = new QVBoxLayout(m_actionMenu);
 
-        tmpLayout->addWidget(new QLabel(tr("技能栏")));
+        QLabel* tmpLabel = new QLabel(tr("技能栏"));
+        auto tmpPolicy = tmpLabel->sizePolicy();
+        tmpPolicy.setVerticalPolicy(QSizePolicy::Minimum);
+        tmpLabel->setSizePolicy(tmpPolicy);
+        
+        tmpLayout->addWidget(tmpLabel);
 
         for (auto item : t_role->skillList()) {
             QPushButton* button = new QPushButton(this);
             button->setText(item->skillName());
             tmpLayout->addWidget(button);
             connect(button, &QPushButton::clicked, [=] { emit skillAction(t_role, item); });
+            
+            auto policy = button->sizePolicy();
+            // policy.setVerticalPolicy(QSizePolicy::Expanding);
+            policy.setHorizontalPolicy(QSizePolicy::Expanding);
+            button->setSizePolicy(policy);
         }
 
         m_actionMenu->setLayout(tmpLayout);
+
+        auto policy = m_actionMenu->sizePolicy();
+        policy.setHorizontalPolicy(QSizePolicy::Expanding);
+        m_actionMenu->setSizePolicy(policy);
+
         m_mainLayout->addWidget(m_actionMenu, 6, 0);
     }
 }

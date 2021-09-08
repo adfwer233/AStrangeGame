@@ -16,13 +16,23 @@
 
 int main(int argc, char* argv[]) {
     QApplication       a(argc, argv);
-    MainWindow         w;
     BattlefieldWidget* widget = nullptr;
 
     auto start = new StartScreen(nullptr);
     auto gameover = new GameoverWidget(nullptr);
     auto levelSelection = new LevelSelection(nullptr);
     auto course = new CourseWidget(nullptr);
+
+    start->setWindowTitle("开始");
+    gameover->setWindowTitle("游戏结束");
+    levelSelection->setWindowTitle("选择关卡和难度");
+    course->setWindowTitle("游戏教程");
+
+    start->setWindowIcon(QIcon(":/new/roles/src/GameBackground.png"));
+    gameover->setWindowIcon(QIcon(":/new/roles/src/GameBackground.png"));
+    levelSelection->setWindowIcon(QIcon(":/new/roles/src/GameBackground.png"));
+    course->setWindowIcon(QIcon(":/new/roles/src/GameBackground.png"));
+
     start->show();
     
     QObject::connect(start, &StartScreen::startButtonClicked, [&]{

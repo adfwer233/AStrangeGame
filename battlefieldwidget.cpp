@@ -9,13 +9,19 @@
 BattlefieldWidget::BattlefieldWidget(QWidget* parent, int levelNumber, levelOfAI t_AIlevel) : QWidget(parent) {
 
     // initialize the game level
-    if (levelNumber == 1)
+    if (levelNumber == 1) {
         m_battlefieldView = new GameLevelOne(parent);
-    else if (levelNumber == 2)
+        this->setWindowTitle("第一关");
+    }
+    else if (levelNumber == 2) {
         m_battlefieldView = new GameLevelTwo(parent);
+        this->setWindowTitle("第二关");
+    }
     else {
         throw "no this level";
     }
+
+    this->setWindowIcon(QIcon(":/new/roles/src/GameBackground.png"));
 
     m_battlefieldView->setAIlevel(t_AIlevel);
 

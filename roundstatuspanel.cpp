@@ -23,7 +23,12 @@ roundStatusPanel::roundStatusPanel(QWidget *parent) : QWidget(parent) {
     layout->addWidget(m_teamLabel, 1 , 1, 1, 2);
     layout->addWidget(m_maxActionPointLabel, 2, 1, 1, 2);
     layout->addWidget(m_actionPointLabel, 3, 1, 1, 2);
-    layout->addWidget(m_endRoundButton, 0 ,3, 2, 2);
+    layout->addWidget(m_endRoundButton, 0 ,3, 2, 4);
+
+    auto sizePolicy = m_endRoundButton->sizePolicy();
+    sizePolicy.setHorizontalPolicy(QSizePolicy::Expanding);
+    sizePolicy.setVerticalPolicy(QSizePolicy::Expanding);
+    m_endRoundButton->setSizePolicy(sizePolicy);
 
     this->setLayout(layout);
     connect(m_endRoundButton, &QPushButton::clicked, this, &roundStatusPanel::endTheRound);
