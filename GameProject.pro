@@ -21,6 +21,7 @@ SOURCES += \
     battlefieldwidget.cpp \
     battlefieldscene.cpp \
     battlefieldview.cpp \
+    coursewidget.cpp \
     fallingobject.cpp \
     flightequipment.cpp \
     gamelevelone.cpp \
@@ -51,6 +52,7 @@ HEADERS += \
     battlefieldwidget.h \
     battlefieldscene.h \
     battlefieldview.h \
+    coursewidget.h \
     fallingobject.h \
     flightequipment.h \
     gamelevelone.h \
@@ -76,6 +78,7 @@ HEADERS += \
     roundstatuspanel.h
 
 FORMS += \
+    coursewidget.ui \
     gameoverwidget.ui \
     levelselection.ui \
     mainwindow.ui \
@@ -87,5 +90,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+	courseSrc.qrc \
 	gifs.qrc \
 	music.qrc

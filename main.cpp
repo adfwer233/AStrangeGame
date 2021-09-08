@@ -9,6 +9,7 @@
 #include "startscreen.h"
 #include "levelselection.h"
 #include "gameoverwidget.h"
+#include "coursewidget.h"
 #include <QLabel>
 #include <QLayout>
 #include <QVBoxLayout>
@@ -21,11 +22,21 @@ int main(int argc, char* argv[]) {
     auto start = new StartScreen(nullptr);
     auto gameover = new GameoverWidget(nullptr);
     auto levelSelection = new LevelSelection(nullptr);
+    auto course = new CourseWidget(nullptr);
     start->show();
     
     QObject::connect(start, &StartScreen::startButtonClicked, [&]{
         start->hide();
         levelSelection->show();
+    });
+
+    QObject::connect(start, &StartScreen::courseButtonClicked, [&]{
+        start->hide();
+        course->show();
+    });
+
+    QObject::connect(course, &CourseWidget::courseClosed, [&]{
+        start->show();
     });
 
     QObject::connect(levelSelection, &LevelSelection::levelSelected, [&](int x, levelOfAI t_level) {

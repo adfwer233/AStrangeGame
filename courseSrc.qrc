@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/new/course">
+        <file>src/course-1.png</file>
+        <file>src/course-2.png</file>
+        <file>src/course-archer.png</file>
+        <file>src/course-shield.png</file>
+        <file>src/course-blueBuff.png</file>
+        <file>src/course-redBuff.png</file>
+        <file>src/course-waterBuff.png</file>
+        <file>src/course-fireBuff.png</file>
+    </qresource>
+</RCC>

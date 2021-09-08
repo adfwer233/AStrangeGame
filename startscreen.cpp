@@ -16,9 +16,7 @@ StartScreen::StartScreen(QWidget *parent) :
     this->setAutoFillBackground(true);
 
     connect(ui->StartButton, &QPushButton::clicked, this, startButtonClicked);
-    connect(ui->TextButton, &QPushButton::clicked, [=]{
-        QMessageBox::information(this, "游戏教程", "写不出来，自学");
-    }); 
+    connect(ui->TextButton, &QPushButton::clicked, this, courseButtonClicked);
 }
 
 StartScreen::~StartScreen()
