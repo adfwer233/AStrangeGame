@@ -28,6 +28,7 @@ signals:
 private:
     QProgressBar* m_lifeValueBar;
     QProgressBar* m_magicValueBar;
+    QLabel* m_imageLabel;
     QLabel* m_damageLabel;
     QLabel* m_defenseLabel;
     QLabel* m_roundLabel;

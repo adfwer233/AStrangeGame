@@ -11,7 +11,6 @@ public:
     virtual void updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, const QVector<QVector<coordinateStatus>>& t_coordinate) override;
     virtual bool handleAttack(Role* t_target, QList<GraphUnit*> t_list);
 private:
-    QMovie *m_movie;
 };
 
 #endif // ARCHER_H

@@ -24,7 +24,7 @@ void GameoverWidget::setWinner(coordinateStatus t_team) {
     if (t_team == teamOne)
         ui->resultLabel->setText(tr("你赢了！！！"));
     else if (t_team == teamTwo)
-        ui->resultLabel->setText(tr("寄！"));
+        ui->resultLabel->setText(tr("失败"));
     else
         ui->resultLabel->setText(tr("作者无法想象的事情发生了"));
 }

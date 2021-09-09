@@ -230,3 +230,7 @@ QList<RoleSkill*> Role::skillList() const {
 void Role::selfHeat() {
     m_magicValue = std::min(m_fullmagicValue, m_magicValue += 2);
 }
+
+QMovie* Role::roleMovie() const {
+    return m_movie;
+}

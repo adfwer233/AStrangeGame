@@ -288,6 +288,7 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
                 }
             }
         }
+
     }
 
 

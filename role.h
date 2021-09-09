@@ -1,21 +1,20 @@
 #ifndef ROLE_H
 #define ROLE_H
 
+#include "graphland.h"
 #include "graphunit.h"
+#include "rolebuff.h"
 #include "roleskill.h"
 #include "statusConstant.h"
-#include "rolebuff.h"
-#include "graphland.h"
 #include <QGraphicsItem>
+#include <QList>
 #include <QString>
 #include <QVector>
-#include <QList>
 
 class Role : public GraphUnit {
     Q_OBJECT
 public:
-
-    static const int MOVE_ACTION_POINT = 1;
+    static const int MOVE_ACTION_POINT   = 1;
     static const int ATTACK_ACTION_POINT = 1;
 
     Role(int t_x, int t_y, int t_team);
@@ -44,15 +43,17 @@ public:
     void settleBuff();
 
     // member functions of skill system
-    void addSkill(RoleSkill* t_skill);
+    void              addSkill(RoleSkill* t_skill);
     QList<RoleSkill*> skillList() const;
 
-    // the virtual functions 
+    // the virtual functions
     virtual void settleLifeLoss(int t_damage);
     virtual void updateActionStatus(QVector<QVector<actionStatus>>& t_actionStatus, const QVector<QVector<coordinateStatus>>& t_coordinate);
-    virtual bool handleAttack(Role* t_target, QList<GraphUnit*> t_list); 
+    virtual bool handleAttack(Role* t_target, QList<GraphUnit*> t_list);
 
     void selfHeat();
+
+    QMovie* roleMovie() const;
 protected:
     // basic properties for roles
     int              m_lifeValue;
@@ -62,6 +63,7 @@ protected:
     int              m_damage;
     int              m_defense;
     coordinateStatus m_teamID;
+    QMovie*          m_movie;
 
     // properties to achieve the Round System
     bool m_roundFinished;
@@ -71,9 +73,8 @@ protected:
     // buff system
     QList<RoleBuff*> m_buffs;
 
-    //skill system
+    // skill system
     QList<RoleSkill*> m_skills;
-
 
 signals:
     void roleStatueChanged(Role*);
