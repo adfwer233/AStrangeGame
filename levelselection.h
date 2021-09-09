@@ -15,10 +15,11 @@ class LevelSelection : public QWidget
 public:
     explicit LevelSelection(QWidget *parent = nullptr);
     ~LevelSelection();
-
+    void closeEvent(QCloseEvent *event) override;
+    
 signals:
     void levelSelected(int, levelOfAI);
-
+    void levelClosed();
 private:
     Ui::LevelSelection *ui;
 };

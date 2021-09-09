@@ -22,3 +22,8 @@ LevelSelection::~LevelSelection()
 {
     delete ui;
 }
+
+void LevelSelection::closeEvent(QCloseEvent *event) {
+    emit levelClosed();
+    QWidget::closeEvent(event);
+}

@@ -44,7 +44,8 @@ SOURCES += \
     roundstatuspanel.cpp \
     shadow.cpp \
     shield.cpp \
-    startscreen.cpp
+    startscreen.cpp \
+    statusConstant.cpp
 
 HEADERS += \
     algorithm.h \

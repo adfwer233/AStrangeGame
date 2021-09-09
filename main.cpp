@@ -49,6 +49,10 @@ int main(int argc, char* argv[]) {
         start->show();
     });
 
+    QObject::connect(levelSelection, &LevelSelection::levelClosed, [&]{
+        start->show();
+    });
+
     QObject::connect(levelSelection, &LevelSelection::levelSelected, [&](int x, levelOfAI t_level) {
         levelSelection->hide();
         widget = new BattlefieldWidget(nullptr, x, t_level);

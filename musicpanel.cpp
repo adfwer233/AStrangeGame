@@ -1,4 +1,5 @@
 #include "musicpanel.h"
+#include "statusConstant.h"
 #include <QGroupBox>
 #include <QLayout>
 
@@ -31,4 +32,6 @@ MusicPanel::MusicPanel(QWidget *parent) : QWidget(parent)
     connect(m_slider, &QSlider::valueChanged, this, changeVolume);
     connect(m_playButton, &QPushButton::clicked, this, &MusicPanel::musicPlay);
     connect(m_pauseButton, &QPushButton::clicked, this, &MusicPanel::musicPause);
+
+    this->setStyleSheet(Constant::panelQSS);
 }

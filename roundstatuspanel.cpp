@@ -32,11 +32,13 @@ roundStatusPanel::roundStatusPanel(QWidget *parent) : QWidget(parent) {
 
     this->setLayout(layout);
     connect(m_endRoundButton, &QPushButton::clicked, this, &roundStatusPanel::endTheRound);
+
+    this->setStyleSheet(Constant::panelQSS);
 }
 
 void roundStatusPanel::updateRoundStatus(roundStatus t_status) {
     m_status = t_status;
-    m_roundNumberLabel->setText(QString::number(m_status.roundNumber));
+    m_roundNumberLabel->setText(QString::number((m_status.roundNumber + 1) / 2 ));
     m_teamLabel->setText(m_status.teamInRound == teamOne ? tr("队伍一") : tr("队伍二"));
     m_maxActionPointLabel->setText(QString::number(m_status.maxActionPoint));
     m_actionPointLabel->setText(QString::number(m_status.actionPoint));

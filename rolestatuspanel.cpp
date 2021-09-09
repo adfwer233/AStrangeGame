@@ -37,13 +37,15 @@ void RoleStatusPanel::initalizer() {
     m_magicValueBar->setMinimum(0);
     m_magicValueBar->setValue(0);
 
-    m_damageLabel->setText(tr("10"));
-    m_defenseLabel->setText(tr("5"));
+    m_damageLabel->setText(tr(""));
+    m_defenseLabel->setText(tr(""));
 
     m_moveButton->setText("移动");
     m_attackButton->setText("攻击");
 
     this->setLayout(m_mainLayout);
+
+    this->setStyleSheet(Constant::panelQSS);
 }
 
 RoleStatusPanel::RoleStatusPanel(QWidget* parent) : QWidget(parent) {
@@ -92,11 +94,11 @@ void RoleStatusPanel::updateByRole(Role* t_role) {
         m_actionMenu           = new QGroupBox(this);
         QVBoxLayout* tmpLayout = new QVBoxLayout(m_actionMenu);
 
-        QLabel* tmpLabel = new QLabel(tr("技能栏"));
-        auto tmpPolicy = tmpLabel->sizePolicy();
+        QLabel* tmpLabel  = new QLabel(tr("技能栏"));
+        auto    tmpPolicy = tmpLabel->sizePolicy();
         tmpPolicy.setVerticalPolicy(QSizePolicy::Minimum);
         tmpLabel->setSizePolicy(tmpPolicy);
-        
+
         tmpLayout->addWidget(tmpLabel);
 
         for (auto item : t_role->skillList()) {
@@ -104,7 +106,7 @@ void RoleStatusPanel::updateByRole(Role* t_role) {
             button->setText(item->skillName());
             tmpLayout->addWidget(button);
             connect(button, &QPushButton::clicked, [=] { emit skillAction(t_role, item); });
-            
+
             auto policy = button->sizePolicy();
             // policy.setVerticalPolicy(QSizePolicy::Expanding);
             policy.setHorizontalPolicy(QSizePolicy::Expanding);
