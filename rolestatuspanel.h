@@ -23,7 +23,7 @@ public:
 signals:
     void moveAction(Role*);
     void attackAction(Role*);
-    void skillAction(Role*, RoleSkill*);
+    void skillAction(Role*, RoleSkill*, bool isAI);
 
 private:
     QProgressBar* m_lifeValueBar;

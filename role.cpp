@@ -150,10 +150,11 @@ void Role::AIaction(BattlefieldView* t_view) {
     Algorithm::basicAI(this, t_view);
 }
 
-bool Role::releaseSkill(RoleSkill* t_skill) {
+bool Role::releaseSkill(RoleSkill* t_skill, bool byAI) {
 
     if (t_skill->magicPointCost() > m_magicValue) {
-        QMessageBox::information(nullptr, tr("技能施放"), tr("魔法值不足，技能施放失败"));
+        if (byAI == false)
+            QMessageBox::information(nullptr, tr("技能施放"), tr("魔法值不足，技能施放失败"));
         return false;
     }
 

@@ -237,6 +237,9 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
     if (t_view->isGameover())
         return;
 
+    if (t_view->m_actionPoint <= 0)
+        return;
+
     QList<Role*> enemyList;
     for (auto item : t_view->scene()->items()) {
         auto role = dynamic_cast<Role*>(item);
@@ -286,6 +289,19 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
                             return;
                         }
                 }
+            }
+        }
+
+        int roleNumber = 0;
+        for (auto role : enemyList) {
+            if (distance(role) <= 2)
+                roleNumber++;
+        }
+
+        if (t_role->inherits("Infantary") && roleNumber >= 3) {
+            for (auto skill : t_role->skillList()) {
+                qDebug() << "Infantary try to release skill";
+                t_view->roleReleaseSkill(t_role, skill, true);
             }
         }
 

@@ -112,7 +112,7 @@ void RoleStatusPanel::updateByRole(Role* t_role) {
             QPushButton* button = new QPushButton(this);
             button->setText(item->skillName());
             tmpLayout->addWidget(button);
-            connect(button, &QPushButton::clicked, [=] { emit skillAction(t_role, item); });
+            connect(button, &QPushButton::clicked, [=] { emit skillAction(t_role, item, false); });
 
             auto policy = button->sizePolicy();
             // policy.setVerticalPolicy(QSizePolicy::Expanding);

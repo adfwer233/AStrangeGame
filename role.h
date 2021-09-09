@@ -83,7 +83,7 @@ signals:
 
 public slots:
     void repaint();
-    bool releaseSkill(RoleSkill*);
+    bool releaseSkill(RoleSkill*, bool byAI = false);
     void AIaction(BattlefieldView* t_view);
 };
 

@@ -538,13 +538,13 @@ void BattlefieldView::actionFinished() {
     emit roundStatudChanged(roundStatus{ m_roundNumber, m_activeTeam, m_maxActionPoint, m_actionPoint });
 }
 
-void BattlefieldView::roleReleaseSkill(Role* t_role, RoleSkill* t_skill) {
+void BattlefieldView::roleReleaseSkill(Role* t_role, RoleSkill* t_skill, bool isAI) {
     if (t_skill->actionPointCost() > this->m_actionPoint) {
         QMessageBox::information(this, "技能施放", "行动点数不足");
         return;
     }
     else {
-        if (t_role->releaseSkill(t_skill)) {
+        if (t_role->releaseSkill(t_skill, isAI)) {
             m_actionPoint -= t_skill->actionPointCost();
         }
         actionFinished();
@@ -572,7 +572,6 @@ void BattlefieldView::updateShadow() {
     for (auto item : this->scene()->items()) {
         auto unit = dynamic_cast<ShadowLand*>(item);
         if (unit != nullptr) {
-            qDebug() << "remove shadow";
             this->scene()->removeItem(unit);
             unit->hide();
             unit->deleteLater();

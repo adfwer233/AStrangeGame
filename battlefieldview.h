@@ -55,7 +55,7 @@ public slots:
 
     void nextRound();
 
-    void roleReleaseSkill(Role* t_role, RoleSkill* t_skill);
+    void roleReleaseSkill(Role* t_role, RoleSkill* t_skill, bool isAI = false);
 
 protected:
     void mousePressEvent(QMouseEvent* event) override;
