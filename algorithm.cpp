@@ -243,7 +243,7 @@ void Algorithm::basicAI(Role* t_role, BattlefieldView* t_view) {
     QList<Role*> enemyList;
     for (auto item : t_view->scene()->items()) {
         auto role = dynamic_cast<Role*>(item);
-        if (role != nullptr && role->teamID() != t_role->teamID()) {
+        if (role != nullptr && role->teamID() != t_role->teamID() && t_role->lifeValue() > 0) {
             enemyList.push_back(role);
         }
     }
