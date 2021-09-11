@@ -78,7 +78,8 @@ bool Archer::handleAttack(Role* t_target, QList<GraphUnit*>) {
 	if (t_target->isShowingAttackable() == true) {
         FlightEquipmentArrow* arrow = new FlightEquipmentArrow();
         arrow->animationReact(this->pos(), t_target->pos(), scene());
-        connect(arrow, &FlightEquipment::animationFinished, this, actionFinished);
+        connect(arrow, &FlightEquipment::animationFinished, this, &Role::actionFinished);
+        //connect(this, &Role::actionFinished, [=]{qDebug() << "action finished"; });
         t_target->settleLifeLoss(this->damage());
         this->setroundFinished(true);
         return true;

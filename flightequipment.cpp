@@ -23,16 +23,21 @@ void FlightEquipment::animationReact(QPointF t_origin, QPointF t_destination, QG
     this->setRotation(180 + 180 / 3.1415 * (qAtan2(t_destination.y() - t_origin.y(), t_destination.x() - t_origin.x())));
 
     t_scene->addItem(this);
-
+    this->setZValue(3);
     QPropertyAnimation* animation = new QPropertyAnimation(this, "pos");
     animation->setDuration(200);
     animation->setStartValue(t_origin);
     animation->setEndValue(t_destination);
 
     // remove the flight equipment when finished the animation
-    connect(animation, &QPropertyAnimation::finished, [=] { t_scene->removeItem(this); });
-    connect(animation, &QPropertyAnimation::finished, [=] { emit this->animationFinished(); });
+    connect(animation, &QPropertyAnimation::finished, [=] {
+        t_scene->removeItem(this);
+    });
+    connect(animation, &QPropertyAnimation::finished, [=] {
+        emit this->animationFinished();
+    });
     animation->start(QPropertyAnimation::DeleteWhenStopped);
+
 }
 
 FlightEquipmentArrow::FlightEquipmentArrow() : FlightEquipment() {

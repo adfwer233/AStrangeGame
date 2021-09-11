@@ -97,7 +97,7 @@ void RoleStatusPanel::updateByRole(Role* t_role) {
         m_roundLabel->setText(tr("不可移动"));
     }
 
-    if (t_role->teamID() == teamOne) {
+    if (true) {
         m_actionMenu           = new QGroupBox(this);
         QVBoxLayout* tmpLayout = new QVBoxLayout(m_actionMenu);
 
@@ -112,7 +112,9 @@ void RoleStatusPanel::updateByRole(Role* t_role) {
             QPushButton* button = new QPushButton(this);
             button->setText(item->skillName());
             tmpLayout->addWidget(button);
-            connect(button, &QPushButton::clicked, [=] { emit skillAction(t_role, item, false); });
+            
+            if (t_role->teamID() == teamOne)
+                connect(button, &QPushButton::clicked, [=] { emit skillAction(t_role, item, false); });
 
             auto policy = button->sizePolicy();
             // policy.setVerticalPolicy(QSizePolicy::Expanding);

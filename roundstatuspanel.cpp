@@ -18,7 +18,7 @@ roundStatusPanel::roundStatusPanel(QWidget *parent) : QWidget(parent) {
     layout->addWidget(new QLabel(tr("已经进行的回合数")),0 ,0 ,1, 1);
     layout->addWidget(new QLabel(tr("当前行动队伍")), 1, 0, 1 ,1);
     layout->addWidget(new QLabel(tr("最大行动点数")), 2 ,0 ,1, 1);
-    layout->addWidget(new QLabel(tr("已用行动点数")), 3, 0 ,1, 1);
+    layout->addWidget(new QLabel(tr("可用行动点数")), 3, 0 ,1, 1);
     layout->addWidget(m_roundNumberLabel, 0 , 1, 1 ,2);
     layout->addWidget(m_teamLabel, 1 , 1, 1, 2);
     layout->addWidget(m_maxActionPointLabel, 2, 1, 1, 2);
